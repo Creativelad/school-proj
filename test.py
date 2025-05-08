@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-# think i got it working took a while
-# just another test
->>>>>>> ad5c32a (just another test)
 import pygame
 
 pygame.init()

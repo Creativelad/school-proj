@@ -15,7 +15,3 @@ while running:
             pygame.quit()
             sys.exit()
     clock.tick()
-
-    
-
-pygame.quit()

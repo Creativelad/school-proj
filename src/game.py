@@ -6,7 +6,7 @@ class Game:
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.running = True
-        self.cat = pygame.image.load('assets/player/cat.png')
+        self.cat = pygame.image.load('../assets/player/cat.png')
         self.cat= pygame.transform.scale(self.cat, (round(self.cat.get_width()/2),round(self.cat.get_height()/2)))
         self.x = 100
         self.y=100

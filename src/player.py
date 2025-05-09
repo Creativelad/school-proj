@@ -4,7 +4,7 @@ class Player:
         self.y=y
         self.image = image
     def move(self,dx,dy,image):
-        self.x +=dx
-        self.y +=dy
+        self.x += dx
+        self.y += dy
         self.image = image
     

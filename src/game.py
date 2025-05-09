@@ -7,6 +7,7 @@ class Game:
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.running = True
+        self.is_resting_forward = True
 
     def run(self):
         cat_image = pygame.image.load('../assets/player/cat.png')
@@ -17,13 +18,17 @@ class Game:
             self.screen.blit(cat.image,(cat.x,cat.y))
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
-                cat.y-=5
+                cat.move(0,-5,cat_image)
             if keys[pygame.K_s]:
-                cat.y+=5
+                cat.move(0,5,cat_image)
             if keys[pygame.K_d]:
-                cat.x+=5
+                cat.move(5,0,cat_image)
+                if self.is_resting_forward:
+                    cat.image = pygame.transform.flip(cat_image, True, False)
             if keys[pygame.K_a]:
-                cat.x-=5
+                cat.move(-5,0,cat_image)
+                if self.is_resting_forward:
+                    cat.image = pygame.transform.flip(cat_image, True, False)
             for event in pygame.event.get():
                  if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()

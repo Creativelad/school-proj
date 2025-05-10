@@ -16,7 +16,7 @@ class Game:
         BASE_DIR = Path(__file__).resolve().parent
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
         cat_image = pygame.transform.scale(cat_image, (round(cat_image.get_width()/5),round(cat_image.get_height()/5)))
-        cat = Player(100,100,cat_image)
+        cat = Player(100,100,cat_image,self)
         platform_image = pygame.image.load(BASE_DIR/"../assets/images/platform.png")
         pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.mp3")
         pygame.mixer.music.play(-1,0.0)
@@ -24,10 +24,6 @@ class Game:
             self.screen.fill((30, 30, 46))
             self.screen.blit(platform_image,(100,450))
             self.screen.blit(cat.image,(cat.x,cat.y))
-            if cat.hitbox.colliderect(self.platform):
-                pygame.draw.rect(self.screen, (0, 100, 255), self.platform)
-            else:
-                pygame.draw.rect(self.screen, (0, 200, 155), self.platform)
             pygame.draw.rect(self.screen, (255, 0, 0), cat.hitbox, 2)
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:

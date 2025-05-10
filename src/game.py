@@ -23,7 +23,7 @@ class Game:
         while self.running:
             self.screen.fill((30, 30, 46))
             self.screen.blit(platform_image,(100,450))
-            self.screen.blit(cat.image,(cat.x,cat.y))
+            self.screen.blit(cat.image,(cat.pos[0],cat.pos[1]))
             pygame.draw.rect(self.screen, (255, 0, 0), cat.hitbox, 2)
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:

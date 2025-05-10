@@ -2,7 +2,11 @@ import pygame
 import sys
 from player import Player
 from pathlib import Path
+from tilemap import Tilemap
+BASE_DIR = Path(__file__).resolve().parent
 class Game:
+ 
+
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
@@ -11,33 +15,33 @@ class Game:
         self.running = True
         self.is_resting_forward = True
         self.platform = pygame.Rect(100,450,675,166)
+        self.assets={"dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
+            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha()}
 
     def run(self):
-        BASE_DIR = Path(__file__).resolve().parent
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
         cat_image = pygame.transform.scale(cat_image, (round(cat_image.get_width()/5),round(cat_image.get_height()/5)))
         cat = Player(100,100,cat_image,self)
-        platform_image = pygame.image.load(BASE_DIR/"../assets/images/platform.png")
         pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.mp3")
         pygame.mixer.music.play(-1,0.0)
+        tilemap = Tilemap(self)
         while self.running:
             self.screen.fill((30, 30, 46))
-            self.screen.blit(platform_image,(100,450))
-            self.screen.blit(cat.image,(cat.pos[0],cat.pos[1]))
+            tilemap.render()
             pygame.draw.rect(self.screen, (255, 0, 0), cat.hitbox, 2)
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_w]:
-                cat.move(0,-5)
-            if keys[pygame.K_s]:
-                cat.move(0,5)
-            if keys[pygame.K_d]:
-                cat.move(5,0)
-            if keys[pygame.K_a]:
-                cat.move(-5,0)
+            movement = [0, 0]
+
+            if keys[pygame.K_w]: movement[1] -= 5
+            if keys[pygame.K_s]: movement[1] += 5
+            if keys[pygame.K_a]: movement[0] -= 5
+            if keys[pygame.K_d]: movement[0] += 5
+            cat.move(movement)            
             for event in pygame.event.get():
                  if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     sys.exit()
+            cat.render()
             pygame.display.update()
             self.clock.tick(60)
 

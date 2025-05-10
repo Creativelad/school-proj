@@ -5,9 +5,11 @@ class Player:
         self.y=y
         self.image = image
         self.direction=True
+        self.hitbox = pygame.Rect(self.x,self.y,self.image.get_width(),self.image.get_height())
     def move(self,dx,dy):
         self.x += dx
         self.y += dy
+        self.hitbox = self.hitbox.move(dx, dy)
         #image = pygame.image.load('../assets/player/cat.png')
         #image = pygame.transform.scale(image, (round(image.get_width()/2),round(image.get_height()/2)))
 

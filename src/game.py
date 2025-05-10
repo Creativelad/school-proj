@@ -4,6 +4,7 @@ from player import Player
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.running = True
@@ -13,6 +14,8 @@ class Game:
         cat_image = pygame.image.load('../assets/player/cat.png')
         cat_image = pygame.transform.scale(cat_image, (round(cat_image.get_width()/2),round(cat_image.get_height()/2)))
         cat = Player(100,100,cat_image)
+        pygame.mixer.music.load("../assets/music/bgm.mp3")
+        pygame.mixer.music.play(-1,0.0)
         while self.running:
             self.screen.fill((30, 30, 46))
             self.screen.blit(cat.image,(cat.x,cat.y))

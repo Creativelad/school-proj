@@ -10,7 +10,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.is_resting_forward = True
-        self.platform = pygame.Rect(100,450,300,50)
+        self.platform = pygame.Rect(100,450,675,166)
 
     def run(self):
         BASE_DIR = Path(__file__).resolve().parent

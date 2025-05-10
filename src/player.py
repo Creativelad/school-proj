@@ -5,7 +5,10 @@ class Player:
         self.y=y
         self.image = image
         self.direction=True
-        self.hitbox = pygame.Rect(self.x,self.y,self.image.get_width(),self.image.get_height())
+        #self.hitbox = pygame.Rect(self.x,self.y,self.image.get_width(),self.image.get_height())
+        self.hitbox = pygame.mask.from_surface(self.image).get_bounding_rects()[0].move(x, y)
+        self.hitbox = self.hitbox.inflate(-2, -14)
+        self.hitbox=self.hitbox.move(-3,6)
     def move(self,dx,dy):
         self.x += dx
         self.y += dy

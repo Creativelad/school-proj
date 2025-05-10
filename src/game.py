@@ -1,6 +1,7 @@
 import pygame
 import sys
 from player import Player
+from pathlib import Path
 class Game:
     def __init__(self):
         pygame.init()
@@ -11,10 +12,11 @@ class Game:
         self.is_resting_forward = True
 
     def run(self):
-        cat_image = pygame.image.load('../assets/player/cat.png')
+        BASE_DIR = Path(__file__).resolve().parent
+        cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
         cat_image = pygame.transform.scale(cat_image, (round(cat_image.get_width()/2),round(cat_image.get_height()/2)))
         cat = Player(100,100,cat_image)
-        pygame.mixer.music.load("../assets/music/bgm.mp3")
+        pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.mp3")
         pygame.mixer.music.play(-1,0.0)
         while self.running:
             self.screen.fill((30, 30, 46))

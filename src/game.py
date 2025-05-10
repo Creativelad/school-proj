@@ -16,6 +16,7 @@ class Game:
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
         cat_image = pygame.transform.scale(cat_image, (round(cat_image.get_width()/5),round(cat_image.get_height()/5)))
         cat = Player(100,100,cat_image)
+        platform = pygame.Rect(100,450,675,166)
         platform_image = pygame.image.load(BASE_DIR/"../assets/images/platform.png")
         pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.mp3")
         pygame.mixer.music.play(-1,0.0)

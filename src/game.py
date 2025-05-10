@@ -16,10 +16,12 @@ class Game:
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
         cat_image = pygame.transform.scale(cat_image, (round(cat_image.get_width()/5),round(cat_image.get_height()/5)))
         cat = Player(100,100,cat_image)
+        platform_image = pygame.image.load(BASE_DIR/"../assets/images/platform.png")
         pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.mp3")
         pygame.mixer.music.play(-1,0.0)
         while self.running:
             self.screen.fill((30, 30, 46))
+            self.screen.blit(platform_image,(100,450))
             self.screen.blit(cat.image,(cat.x,cat.y))
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:

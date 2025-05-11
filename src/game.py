@@ -22,15 +22,16 @@ class Game:
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
         cat = Player(100,100,cat_image,self)
         pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.mp3")
-        #pygame.mixer.music.play(-1,0.0)
+        # v ENABLE THIS BEFORE MAIN RELASE v 
+        # pygame.mixer.music.play(-1,0.0)
         tilemap = Tilemap(self)
         while self.running:
             self.screen.fill((30, 30, 46))
             tilemap.render()
             keys = pygame.key.get_pressed()
             movement = [0, 0]
-
-            if keys[pygame.K_w]: cat.vel[1]=-3
+            
+            if keys[pygame.K_SPACE] and cat.vel[1] == 0: cat.vel[1]=-3
             if keys[pygame.K_a]: movement[0] -= 5
             if keys[pygame.K_d]: movement[0] += 5
             cat.move(tilemap,movement)            
@@ -39,7 +40,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
             cat.render()
-            print(tilemap.physics_rects_around(cat.pos,(4,2)))
+            #print(tilemap.physics_rects_around(cat.pos,(4,2)))
             pygame.display.update()
             self.clock.tick(60)
 

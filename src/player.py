@@ -1,17 +1,14 @@
 from entity import Entity
 class Player(Entity):
-    def adjustHitbox(self):
-        self.hitbox = self.hitbox.inflate(-2, -14)
-        self.hitbox=self.hitbox.move(-3,6)
+    def render (self):
+        self.game.screen.blit(self.image,(self.pos[0],self.pos[1]-8))
+    
 
     def __init__(self,x,y,image,game):  
         super().__init__(x,y,image,game)
-        self.adjustHitbox()
 
-
-    def move(self,movement=(0,0)):
-        super().move(movement)
-        self.adjustHitbox()
+    def move(self,tilemap,movement=(0,0)):
+        super().move(tilemap,movement)
 
     
 

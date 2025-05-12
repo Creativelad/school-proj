@@ -1,5 +1,5 @@
-from game import Game
+from editor import Editor
 
 if __name__ == "__main__":
-    game = Game()
+    game = Editor()
     game.run()

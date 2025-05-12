@@ -1,4 +1,5 @@
 import pygame
+import json
 NEIGHBOR_OFSETS=[(-1,0),(-1,-1),(0,-1),(1,-1),(1,0),(0,0),(-1,1),(0,1),(1,1)]
 PHYSICS_TILES={"grass","dirt"}
 class Tilemap:
@@ -48,5 +49,18 @@ class Tilemap:
                     self.game.screen.blit(self.game.assets[tile["type"]],(tile["pos"][0]*self.tile_size - offset[0],tile["pos"][1]*self.tile_size - offset[1]))
 
            
+    def save(self, path):
+        f = open(path, 'w')
+        json.dump({'tilemap': self.tilemap, 'tile_size': self.tile_size, 'offgrid': self.offgrid_tiles}, f)
+        f.close()
+        
+    def load(self, path):
+        f = open(path, 'r')
+        map_data = json.load(f)
+        f.close()
+        
+        self.tilemap = map_data['tilemap']
+        self.tile_size = map_data['tile_size']
+        self.offgrid_tiles = map_data['offgrid']
         
 

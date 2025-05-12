@@ -18,7 +18,7 @@ class Game:
         self.platform = pygame.Rect(100,450,675,166)
         self.assets={"dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
             "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha()}
-        self.scroll = [0,0]
+        self.scroll = [0.0,0.0]
 
     def run(self):
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
@@ -36,7 +36,7 @@ class Game:
             keys = pygame.key.get_pressed()
             movement = [0, 0]
 
-            if keys[pygame.K_SPACE] and cat.vel[1] == 0: cat.vel[1]=-3
+            if keys[pygame.K_SPACE] and cat.vel[1] == 0: cat.vel[1]=-5
             if keys[pygame.K_a]: movement[0] -= 5
             if keys[pygame.K_d]: movement[0] += 5
             cat.move(tilemap,movement)            

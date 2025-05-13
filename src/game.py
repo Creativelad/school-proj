@@ -10,6 +10,7 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
+        self.font = pygame.font.Font(BASE_DIR / "../assets/fonts/font1.ttf", 16)
         self.res = (1280//2, 720//2)
         self.screen = pygame.Surface(self.res)
         self.real_screen = pygame.display.set_mode((self.res[0]*2, self.res[1]*2))

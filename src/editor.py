@@ -8,6 +8,7 @@ class Editor:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Editor')
+        self.font = pygame.font.Font(BASE_DIR / "../assets/fonts/font1.ttf", 16)
         # Create an 800×600 window directly (no intermediate surface)
         self.clock = pygame.time.Clock()
         self.res = (1280//2, 720//2)
@@ -40,6 +41,10 @@ class Editor:
         # Mouse state
         self.clicking = False
         self.right_clicking = False
+        self.placing_text = False    
+        self.is_typing     = False    
+        self.typing_text   = ""       
+        self.typing_pos    = (0,0)    
 
     def run(self):
         while True:
@@ -52,6 +57,9 @@ class Editor:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_o:
                         self.tilemap.save('map.json')
+                    if event.key == pygame.K_t:
+                        self.placing_text = True
+                        print("Text mode: click to choose location")
                     if event.key in (pygame.K_LEFT, pygame.K_a):
                         self.movement[0] = True
                     if event.key in (pygame.K_RIGHT, pygame.K_d):
@@ -80,6 +88,17 @@ class Editor:
                         self.tile_group = (self.tile_group - 1) % len(self.tile_list)  # Switch to previous tile group
                     elif event.button == 5:  # Scroll Down
                         self.tile_group = (self.tile_group + 1) % len(self.tile_list)  # Switch to next tile group
+                if self.placing_text and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                     real_x, real_y = event.pos
+                     mx, my = real_x // 2, real_y // 2          # map into 640×360 canvas
+                     # now convert to grid coords
+                     gx = (mx + self.scroll[0]) // self.tilemap.tile_size
+                     gy = (my + self.scroll[1]) // self.tilemap.tile_size
+                     self.typing_pos    = (int(gx), int(gy))
+                     self.typing_text   = ""
+                     self.is_typing     = True
+                     self.placing_text  = False
+                     print("Typing text: press ENTER to finish")
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:  # left click
                         self.clicking = True
@@ -91,6 +110,20 @@ class Editor:
                         self.clicking = False
                     if event.button == 3:
                         self.right_clicking = False
+
+                if self.is_typing and event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        # commit to tilemap
+                        self.tilemap.texts.append({
+                            'pos':  self.typing_pos,
+                            'text': self.typing_text
+                        })
+                        self.is_typing = False
+                        print(f"Committed text: {self.typing_text!r}")
+                    elif event.key == pygame.K_BACKSPACE:
+                        self.typing_text = self.typing_text[:-1]
+                    else:
+                        self.typing_text += event.unicode
 
             # Update scroll offset
             # (Right minus left, down minus up) – matching reference scroll logic:contentReference[oaicite:5]{index=5}
@@ -120,16 +153,30 @@ class Editor:
 
             # Place or remove tile in the tilemap dictionary
             key = f"{tile_x};{tile_y}"
-            if self.clicking:
+            if self.clicking and not (self.placing_text or self.is_typing):
                 # Write new tile info into internal tilemap dict:contentReference[oaicite:8]{index=8}
                 self.tilemap.tilemap[key] = {
                     'type': self.tile_list[self.tile_group],
                     'pos': (tile_x, tile_y)
                 }
-            if self.right_clicking and key in self.tilemap.tilemap:
+            if self.right_clicking :
+                if key in self.tilemap.tilemap:
                 # Delete tile if it exists:contentReference[oaicite:9]{index=9}
-                del self.tilemap.tilemap[key]
+                    del self.tilemap.tilemap[key]
+                
+                self.tilemap.texts[:] = [
+                    obj for obj in self.tilemap.texts
+                     if obj['pos'] != (tile_x, tile_y)
+                ]
 
+            if self.is_typing:
+                px, py = self.typing_pos
+                preview_surf = self.font.render(self.typing_text + "|", True, (200,200,255))
+                self.screen.blit(
+                    preview_surf,
+                    (px * self.tilemap.tile_size - self.scroll[0],
+                     py * self.tilemap.tile_size - self.scroll[1])
+                )
             # Update the display at native resolution
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
             self.real_screen.blit(scaled_surface, (0, 0))

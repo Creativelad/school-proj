@@ -35,6 +35,14 @@ class Tilemap:
 
 
     def render(self, offset=(0,0)):
+         for obj in self.texts:
+            tx, ty = obj['pos']
+            surf = self.render_text_with_outline(obj['text'], (205,214,244),(0,0,0))
+            self.game.screen.blit(
+                surf,
+                (tx * self.tile_size - offset[0],
+                 ty * self.tile_size - offset[1])
+            )
          for tile in self.offgrid_tiles:
             self.game.screen.blit(self.game.assets[tile["type"]],(tile["pos"][0] - offset[0], tile["pos"][1] - offset[1]))
 
@@ -61,4 +69,22 @@ class Tilemap:
         self.offgrid_tiles = map_data['offgrid']
         self.texts = map_data['texts']
         
+
+    def render_text_with_outline(self, text, fg_color, outline_color):
+         txt_surf = self.game.font.render(text, True, fg_color)
+         w, h = txt_surf.get_size()
+         
+         # Create a surface large enough for the outline
+         surf = pygame.Surface((w+2, h+2), pygame.SRCALPHA)
+         
+         # Render outline by blitting the text in the outline color at 8 offsets
+         outline = self.game.font.render(text, True, outline_color)
+         for dx in (-1, 0, 1):
+             for dy in (-1, 0, 1):
+                 if dx or dy:
+                     surf.blit(outline, (dx+1, dy+1))
+         
+         # Blit the main text in the center
+         surf.blit(txt_surf, (1, 1))
+         return surf
 

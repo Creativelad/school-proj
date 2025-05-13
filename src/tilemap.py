@@ -1,7 +1,7 @@
 import pygame
 import json
 NEIGHBOR_OFSETS=[(-1,0),(-1,-1),(0,-1),(1,-1),(1,0),(0,0),(-1,1),(0,1),(1,1)]
-PHYSICS_TILES={"grass","dirt"}
+PHYSICS_TILES={"grass","dirt","sand_brick","sand_cracked_brick"}
 class Tilemap:
     def __init__(self,game,tile_size=16):
         self.game = game

@@ -16,8 +16,14 @@ class Game:
         self.running = True
         self.is_resting_forward = True
         self.platform = pygame.Rect(100,450,675,166)
-        self.assets={"dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
-            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha()}
+        self.assets = {
+            "dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
+            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha(),
+            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.jpg").convert_alpha(),
+            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.jpg"),
+            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert_alpha()
+
+        } 
         self.scroll = [0.0,0.0]
         self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png")
 
@@ -28,6 +34,11 @@ class Game:
         # v ENABLE THIS BEFORE MAIN RELASE v 
         # pygame.mixer.music.play(-1,0.0)
         tilemap = Tilemap(self)
+        try:
+            tilemap.load('map.json')
+        except FileNotFoundError:
+            pass
+
         while self.running:
             #self.screen.fill((30, 30, 46))
             self.screen.blit(self.bg, (0, 0))

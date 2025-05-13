@@ -1,10 +1,10 @@
-#from editor import Editor
-#
-#if __name__ == "__main__":
-#    game = Editor()
-#    game.run()
+from editor import Editor
 from game import Game
 
 if __name__ == "__main__":
-    game = Game()
+    editormode=False
+    if editormode:
+        game= Editor()
+    else:
+        game = Game()
     game.run()

@@ -8,12 +8,8 @@ class Tilemap:
         self.tile_size = tile_size
         self.tilemap={}
         self.offgrid_tiles=[]
-        for i in range (4):
-            self.tilemap[str(12+i)+";30"]={"type": "grass","pos":(12+i,30)}
-            self.tilemap[str(12+i)+";31"]={"type": "dirt","pos":(12+i,31)}
-            self.tilemap["31;"+str(12+i)]={"type": "dirt","pos":(31,12+i)}
-
-    
+        self.texts=[]
+           
     def tiles_around(self, pos, size=(1, 1)):
         tiles = []
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
@@ -29,6 +25,7 @@ class Tilemap:
                     if check_loc in self.tilemap:
                         tiles.append(self.tilemap[check_loc])
         return tiles
+
     def physics_rects_around(self,pos,size=(1,1)):
         rects=[]
         for tile in self.tiles_around(pos,size):
@@ -51,7 +48,7 @@ class Tilemap:
            
     def save(self, path):
         f = open(path, 'w')
-        json.dump({'tilemap': self.tilemap, 'tile_size': self.tile_size, 'offgrid': self.offgrid_tiles}, f)
+        json.dump({'tilemap': self.tilemap, 'tile_size': self.tile_size, 'offgrid': self.offgrid_tiles,'texts': self.texts}, f)
         f.close()
         
     def load(self, path):
@@ -62,5 +59,6 @@ class Tilemap:
         self.tilemap = map_data['tilemap']
         self.tile_size = map_data['tile_size']
         self.offgrid_tiles = map_data['offgrid']
+        self.texts = map_data['texts']
         
 

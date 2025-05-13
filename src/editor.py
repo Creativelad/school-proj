@@ -13,8 +13,14 @@ class Editor:
         self.clock = pygame.time.Clock()
         self.res = (800, 600)
         # Load tile assets (same as original: 'decor', 'grass', etc.)
-        self.assets = {"dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
-            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha()}      
+        self.assets = {
+            "dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
+            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha(),
+            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.jpg").convert_alpha(),
+            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.jpg"),
+            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert_alpha()
+
+        }      
         self.tilemap = Tilemap(self, tile_size=16)
         
         try:
@@ -91,7 +97,7 @@ class Editor:
             self.scroll[1] += (self.movement[3] - self.movement[2]) * 4
 
             # Clear the screen
-            self.screen.fill((0, 0, 0))
+            self.screen.fill((30, 30, 46))
             # Render existing tiles (using the scroll offset)
             render_offset = (int(self.scroll[0]), int(self.scroll[1]))
             self.tilemap.render(offset=render_offset)

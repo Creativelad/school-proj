@@ -1,6 +1,6 @@
 import pygame
 class Entity:
-    def __init__(self,x,y,image,game):
+    def __init__(self,x,y,image,game,size=(1,1)):
         self.pos=[x,y]
         self.image = image.convert_alpha()
         self.direction=True
@@ -8,6 +8,7 @@ class Entity:
         self.game=game
         self.vel=[0.0,0.0]
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
+        self.size=size
 
     def move(self,tilemap,movement=(0,0)):
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
@@ -17,7 +18,7 @@ class Entity:
         self.pos[0] += frame_movement[0]
 
         entity_rect = self.rect()
-        for rect in tilemap.physics_rects_around(self.pos,(4,2)):
+        for rect in tilemap.physics_rects_around(self.pos,self.size):
             if entity_rect.colliderect(rect):
                 if frame_movement[0]>0:
                     entity_rect.right=rect.left
@@ -29,7 +30,7 @@ class Entity:
 
         self.pos[1] += frame_movement[1]
         entity_rect = self.rect()
-        for rect in tilemap.physics_rects_around(self.pos,(4,2)):
+        for rect in tilemap.physics_rects_around(self.pos,self.size):
             if entity_rect.colliderect(rect):
                 if frame_movement[1]>0:
                     entity_rect.bottom=rect.top
@@ -54,4 +55,4 @@ class Entity:
         self.game.screen.blit(self.image,(self.pos[0],self.pos[1]))
 
     def rect(self):
-        return pygame.Rect(self.pos[0],self.pos[1],64,32)
+        return pygame.Rect(self.pos[0],self.pos[1],self.size[0]*16,16*self.size[1])

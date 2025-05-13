@@ -9,9 +9,10 @@ class Editor:
         pygame.init()
         pygame.display.set_caption('Editor')
         # Create an 800×600 window directly (no intermediate surface)
-        self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
-        self.res = (800, 600)
+        self.res = (1280//2, 720//2)
+        self.screen = pygame.Surface(self.res)
+        self.real_screen = pygame.display.set_mode((self.res[0]*2, self.res[1]*2))
         # Load tile assets (same as original: 'decor', 'grass', etc.)
         self.assets = {
             "dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
@@ -103,7 +104,9 @@ class Editor:
             self.tilemap.render(offset=render_offset)
 
             # Draw ghost (preview) tile under mouse
-            mpos = pygame.mouse.get_pos()              # raw mouse pos (no scaling)
+            empos = pygame.mouse.get_pos()              # raw mouse pos (no scaling)
+            mpos = (empos[0] // 2, empos[1] // 2)
+
             # Compute tile coordinates by adding scroll and dividing by tile_size:contentReference[oaicite:6]{index=6}
             tile_x = int((mpos[0] + self.scroll[0]) // self.tilemap.tile_size)
             tile_y = int((mpos[1] + self.scroll[1]) // self.tilemap.tile_size)
@@ -128,6 +131,8 @@ class Editor:
                 del self.tilemap.tilemap[key]
 
             # Update the display at native resolution
-            pygame.display.update()
+            scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
+            self.real_screen.blit(scaled_surface, (0, 0))
+            pygame.display.flip()
             self.clock.tick(60)
 

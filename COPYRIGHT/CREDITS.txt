@@ -66,3 +66,28 @@
      Modified to be 16x16. Also released under CC0, a copy of which is provided with this software for your reference.
 
 ----------------------------------------
+
+----------------------------------------
+
+ Title:
+     Seamless desert background in parts
+
+ Author:
+     PWL
+
+ URL:
+     https://opengameart.org/content/seamless-desert-background-in-parts
+
+ License(s):
+     * CC0 ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+
+ Copyright/Attribution Notice:
+     As "PWL" if you'd like.
+
+ File(s):
+     * desert.zip ( unzipped and renamed to bg.png )
+
+ Note:
+     A copy of the CC0 license has been provided with this software for your reference.
+
+----------------------------------------

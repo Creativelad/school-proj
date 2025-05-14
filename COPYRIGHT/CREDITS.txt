@@ -1,0 +1,68 @@
+----------------------------------------
+
+ Title:
+     Suez Crisis
+
+ Author:
+     Spring Spring
+
+ URL:
+     https://opengameart.org/content/suez-crisis
+
+ License(s):
+     * CC-BY 3.0 ( http://creativecommons.org/licenses/by/3.0/legalcode )
+     * OGA-BY 3.0 ( http://static.opengameart.org/OGA-BY-3.0.txt )
+     * CC0 ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+     * CC-BY-SA 3.0 ( http://creativecommons.org/licenses/by-sa/3.0/legalcode )
+
+ File(s):
+     * Suez Crisis.ogg ( renamed to boss.ogg )
+
+ Note:
+     A copy of the CC0 license has been provided with this software for your reference.
+
+----------------------------------------
+
+----------------------------------------
+
+ Title:
+     Jersey Font
+
+ Author:
+     The Soft Type Project Authors
+
+ URL:
+     https://fonts.google.com/specimen/Jersey+10
+
+ License(s):
+     * OFL 1.1 ( https://openfontlicense.org/open-font-license-official-text/ )
+
+ File(s):
+     * Jersey10-Regular.ttf ( renamed to font1.ttf )
+
+ Note:
+     A copy of the OFL license has been provided with this software for your reference.
+
+----------------------------------------
+
+----------------------------------------
+
+ Title:
+     Sand Textures Pack 2
+
+ Author:
+     Proxy Games
+
+ URL:
+     https://opengameart.org/content/sand-textures-pack-2
+
+ License(s):
+     * CC0 ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+
+ File(s):
+     * Sand_1.jpg ( renamed to sand.png )
+
+ Note:
+     Modified to be 16x16. Also released under CC0, a copy of which is provided with this software for your reference.
+
+----------------------------------------

@@ -9,6 +9,8 @@ class Player(Entity):
             self.game.screen.blit(pygame.image.load(BASE_DIR/"../assets/player/heart.png").convert_alpha(),(16 + i*16,32))
         for i in range(self.max_health - self.health):
             self.game.screen.blit(pygame.image.load(BASE_DIR/"../assets/player/empty_heart.png").convert_alpha(),(16 + (i+self.health)*16,32))
+        for i in range(self.shield):
+            self.game.screen.blit(pygame.image.load(BASE_DIR/"../assets/player/shield.png").convert_alpha(),(16 + i*16,16))
     
 
     def __init__(self,x,y,image,game,max_health,shield):  

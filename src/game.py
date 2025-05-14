@@ -19,47 +19,59 @@ class Game:
         self.is_resting_forward = True
         self.platform = pygame.Rect(100,450,675,166)
         self.assets = {
-            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png"),
-            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png"),
-            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png")
+            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png").convert(),
+            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png").convert(),
+            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert(),
+            "player_spawn": pygame.transform.scale(pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
+,(32,16))
+
 
         } 
-        self.scroll = [0.0,0.0]
-        self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png")
-        self.bg = pygame.transform.scale(self.bg,(self.res[0],self.res[1]))
-
-    def run(self):
-        cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
-        cat_image= pygame.transform.scale(cat_image,(32,20))
-
-        cat = Player(0,0,cat_image,self,5,5)
-        pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.ogg")
-        # v ENABLE THIS BEFORE MAIN RELASE v 
-        pygame.mixer.music.play(-1,0.0)
-        tilemap = Tilemap(self)
+        self.tilemap = Tilemap(self)
         try:
-            tilemap.load('map.json')
+           self.tilemap.load('map.json')
         except FileNotFoundError:
             pass
 
+        self.scroll = [0.0,0.0]
+        self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png").convert()
+        self.bg = pygame.transform.scale(self.bg,(self.res[0],self.res[1]))
+        cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
+        cat_image= pygame.transform.scale(cat_image,(32,20))
+        
+        spawn = self.tilemap.extract("player_spawn", False)
+        if spawn:
+            x, y = spawn[0]["pos"]
+            self.cat = Player(x*self.tilemap.tile_size, y*self.tilemap.tile_size, cat_image, self, 5, 5)
+        else:
+            self.cat = Player(0, 0, cat_image, self, 5, 5)
+
+
+
+    def run(self):
+
+        pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.ogg")
+        # v ENABLE THIS BEFORE MAIN RELASE v 
+        pygame.mixer.music.play(-1,0.0)
+        
         while self.running:
             #self.screen.fill((30, 30, 46))
             self.screen.blit(self.bg, (0, 0))
-            self.scroll[0] += (cat.rect().centerx - self.res[0] / 2 - self.scroll[0]) / 30
-            self.scroll[1] += (cat.rect().centery - self.res[1] / 2 - self.scroll[1]) / 30
+            self.scroll[0] += (self.cat.rect().centerx - self.res[0] / 2 - self.scroll[0]) / 30
+            self.scroll[1] += (self.cat.rect().centery - self.res[1] / 2 - self.scroll[1]) / 30
             render_scroll = (int(self.scroll[0]), int(self.scroll[1]))
-            tilemap.render(offset=render_scroll)
+            self.tilemap.render(offset=render_scroll)
             keys = pygame.key.get_pressed()
             movement = [0, 0]
-            if keys[pygame.K_SPACE] and cat.vel[1] == 0: cat.vel[1]=-3
+            if keys[pygame.K_SPACE] and self.cat.vel[1] == 0: self.cat.vel[1]=-3
             if keys[pygame.K_a]: movement[0] -= 3
             if keys[pygame.K_d]: movement[0] += 3
-            cat.move(tilemap,movement)            
+            self.cat.move(self.tilemap,movement)            
             for event in pygame.event.get():
                  if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     sys.exit()
-            cat.render(offset=render_scroll)
+            self.cat.render(offset=render_scroll)
             #print(tilemap.physics_rects_around(cat.pos,(4,2)))
             #pygame.display.update()
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))

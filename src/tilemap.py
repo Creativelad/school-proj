@@ -87,4 +87,33 @@ class Tilemap:
          # Blit the main text in the center
          surf.blit(txt_surf, (1, 1))
          return surf
+    
+
+    def extract(self, type, keep=False):
+        matches = []
+    
+        for tile in self.offgrid_tiles.copy():
+            if tile["type"] == type:
+                matches.append(tile.copy())
+                if not keep:
+                    self.offgrid_tiles.remove(tile)
+
+        for loc in self.tilemap.copy():
+            tile = self.tilemap[loc]
+            if tile["type"] == type:
+                matches.append(tile.copy())
+            # Check if tile["pos"] is a tuple, and handle accordingly
+                if isinstance(matches[-1]["pos"], tuple):
+                # Create a new list from the tuple to modify its values
+                    pos = list(matches[-1]["pos"])
+                    pos[0] *= self.tile_size
+                    pos[1] *= self.tile_size
+                    matches[-1]["pos"] = tuple(pos)  # convert it back to a tuple if necessary
+                else:
+                # If it's already a mutable type (list), just copy it
+                    matches[-1]["pos"] = matches[-1]["pos"].copy()
+                
+                if not keep:
+                    del self.tilemap[loc]
+        return matches
 

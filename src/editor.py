@@ -17,8 +17,12 @@ class Editor:
         # Load tile assets (same as original: 'decor', 'grass', etc.)
         self.assets = {
             "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png").convert_alpha(),
+
             "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png"),
-            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert_alpha()
+            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert_alpha(),
+            "player_spawn": pygame.transform.scale(pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
+,(32,16))
+
 
         }      
         self.tilemap = Tilemap(self, tile_size=16)
@@ -42,7 +46,13 @@ class Editor:
         self.placing_text = False    
         self.is_typing     = False    
         self.typing_text   = ""       
-        self.typing_pos    = (0,0)    
+        self.typing_pos    = (0,0)
+
+        self.is_player_spawner= False
+        self.is_player_spawner=bool(self.tilemap.extract("player_spawn", True))
+
+
+
 
     def run(self):
         while True:
@@ -152,11 +162,19 @@ class Editor:
             # Place or remove tile in the tilemap dictionary
             key = f"{tile_x};{tile_y}"
             if self.clicking and not (self.placing_text or self.is_typing):
+                
                 # Write new tile info into internal tilemap dict:contentReference[oaicite:8]{index=8}
-                self.tilemap.tilemap[key] = {
-                    'type': self.tile_list[self.tile_group],
-                    'pos': (tile_x, tile_y)
-                }
+                if not(self.tile_list[self.tile_group] == "player_spawn") :
+                    self.tilemap.tilemap[key] = {
+                        'type': self.tile_list[self.tile_group],
+                        'pos': (tile_x, tile_y)
+                    }
+                elif self.tile_list[self.tile_group] == "player_spawn" and not self.is_player_spawner:
+                    self.tilemap.tilemap[key] = {
+                        'type': self.tile_list[self.tile_group],
+                        'pos': (tile_x, tile_y)
+                    }
+                    self.is_player_spawner = True
             if self.right_clicking :
                 if key in self.tilemap.tilemap:
                 # Delete tile if it exists:contentReference[oaicite:9]{index=9}
@@ -166,6 +184,7 @@ class Editor:
                     obj for obj in self.tilemap.texts
                      if obj['pos'] != (tile_x, tile_y)
                 ]
+                
 
             if self.is_typing:
                 px, py = self.typing_pos
@@ -179,5 +198,6 @@ class Editor:
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()
+            self.is_player_spawner=bool(self.tilemap.extract("player_spawn", True))
             self.clock.tick(60)
 

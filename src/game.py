@@ -19,8 +19,6 @@ class Game:
         self.is_resting_forward = True
         self.platform = pygame.Rect(100,450,675,166)
         self.assets = {
-            "dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png"),
-            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png"),
             "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png"),
             "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png"),
             "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png")

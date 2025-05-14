@@ -23,7 +23,8 @@ class Game:
             "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png").convert(),
             "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert(),
             "player_spawn": pygame.transform.scale(pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
-,(32,16))
+,(32,16)),
+            "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha()
 
 
         } 

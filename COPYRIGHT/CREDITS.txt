@@ -91,3 +91,26 @@
      A copy of the CC0 license has been provided with this software for your reference.
 
 ----------------------------------------
+
+----------------------------------------
+
+ Title:
+     Egyptian meditation music
+
+ Author:
+     brandon75689
+
+ URL:
+     https://opengameart.org/content/egyptian-meditation-music
+
+ License(s):
+     * OGA-BY 3.0 ( http://static.opengameart.org/OGA-BY-3.0.txt )
+     * CC0 ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+
+ File(s):
+     * v312.ogg ( renamed to bgm.ogg )
+
+ Note:
+     A copy of the CC0 license has been provided with this software for your reference.
+
+----------------------------------------

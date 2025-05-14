@@ -55,20 +55,20 @@ class Editor:
                     sys.exit()
                 # Keyboard for scrolling (arrow keys or WASD)
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_o:
+                    if event.key == pygame.K_o and not (self.placing_text or self.is_typing):
                         self.tilemap.save('map.json')
                     if event.key == pygame.K_t:
                         self.placing_text = True
                         print("Text mode: click to choose location")
-                    if event.key in (pygame.K_LEFT, pygame.K_a):
+                    if event.key in (pygame.K_LEFT, pygame.K_a) and not (self.placing_text or self.is_typing):
                         self.movement[0] = True
-                    if event.key in (pygame.K_RIGHT, pygame.K_d):
+                    if event.key in (pygame.K_RIGHT, pygame.K_d) and not (self.placing_text or self.is_typing):
                         self.movement[1] = True
-                    if event.key in (pygame.K_UP, pygame.K_w):
+                    if event.key in (pygame.K_UP, pygame.K_w) and not (self.placing_text or self.is_typing):
                         self.movement[2] = True
-                    if event.key in (pygame.K_DOWN, pygame.K_s):
+                    if event.key in (pygame.K_DOWN, pygame.K_s) and not (self.placing_text or self.is_typing):
                         self.movement[3] = True
-                    if event.key in (pygame.K_LSHIFT, pygame.K_RSHIFT):
+                    if event.key in (pygame.K_LSHIFT, pygame.K_RSHIFT) and not (self.placing_text or self.is_typing):
                         self.shift = True
                 if event.type == pygame.KEYUP:
                     if event.key in (pygame.K_LEFT, pygame.K_a):

@@ -34,7 +34,7 @@ class Game:
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png")
         cat_image= pygame.transform.scale(cat_image,(32,20))
 
-        cat = Player(0,0,cat_image,self)
+        cat = Player(0,0,cat_image,self,5,5)
         pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.mp3")
         # v ENABLE THIS BEFORE MAIN RELASE v 
         # pygame.mixer.music.play(-1,0.0)

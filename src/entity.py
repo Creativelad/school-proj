@@ -1,6 +1,6 @@
 import pygame
 class Entity:
-    def __init__(self,x,y,image,game,size=(1,1)):
+    def __init__(self,x,y,image,game,health,size=(1,1)):
         self.pos=[x,y]
         self.image = image.convert_alpha()
         self.direction=True
@@ -9,6 +9,8 @@ class Entity:
         self.vel=[0.0,0.0]
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
         self.size=size
+        self.health=health
+        self.max_health=health
 
     def move(self,tilemap,movement=(0,0)):
         self.collisions = {"up":False,"down":False,"left":False,"right":False}

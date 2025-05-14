@@ -19,11 +19,11 @@ class Game:
         self.is_resting_forward = True
         self.platform = pygame.Rect(100,450,675,166)
         self.assets = {
-            "dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
-            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha(),
-            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.jpg").convert_alpha(),
-            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.jpg"),
-            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert_alpha()
+            "dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png"),
+            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png"),
+            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png"),
+            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png"),
+            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png")
 
         } 
         self.scroll = [0.0,0.0]

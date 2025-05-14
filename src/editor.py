@@ -16,10 +16,8 @@ class Editor:
         self.real_screen = pygame.display.set_mode((self.res[0]*2, self.res[1]*2))
         # Load tile assets (same as original: 'decor', 'grass', etc.)
         self.assets = {
-            "dirt":pygame.image.load(BASE_DIR/"../assets/images/5.png").convert_alpha(),
-            "grass":pygame.image.load(BASE_DIR/"../assets/images/1.png").convert_alpha(),
-            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.jpg").convert_alpha(),
-            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.jpg"),
+            "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png").convert_alpha(),
+            "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png"),
             "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert_alpha()
 
         }      

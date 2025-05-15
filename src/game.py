@@ -65,7 +65,10 @@ class Game:
             self.tilemap.render(offset=render_scroll)
             keys = pygame.key.get_pressed()
             movement = [0, 0]
-            if keys[pygame.K_SPACE] and self.cat.vel[1] == 0: self.cat.vel[1]=-3
+            if keys[pygame.K_SPACE] and self.cat.vel[1] == 0:
+                self.cat.vel[1]=-3
+                pygame.mixer.music.load(BASE_DIR / "../assets/sounds/jump.ogg")
+                pygame.mixer.music.play(0,0.0)
             if keys[pygame.K_a]: 
                 movement[0] -= 3
             if keys[pygame.K_d]: 

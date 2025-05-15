@@ -56,6 +56,7 @@ class Game:
         # v ENABLE THIS BEFORE MAIN RELASE v 
         pygame.mixer.music.play(-1,0.0)
         
+        self.cat.dashing = False
         while self.running:
             #self.screen.fill((30, 30, 46))
             self.screen.blit(self.bg, (0, 0))

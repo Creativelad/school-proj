@@ -64,6 +64,7 @@ class Game:
             render_scroll = (int(self.scroll[0]), int(self.scroll[1]))
             self.tilemap.render(offset=render_scroll)
             keys = pygame.key.get_pressed()
+            mouse = pygame.mouse.get_pressed()
             movement = [0, 0]
             if keys[pygame.K_SPACE] and self.cat.vel[1] == 0:
                 self.cat.vel[1]=-3
@@ -73,7 +74,36 @@ class Game:
                 movement[0] -= 3
             if keys[pygame.K_d]: 
                 movement[0] += 3
-            self.cat.move(self.tilemap,movement)            
+             
+            if mouse[0] and not self.cat.dashing:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+
+                mouse_x_unscaled = mouse_x / 2
+                mouse_y_unscaled = mouse_y / 2
+                
+                # Undo camera scroll (scroll holds world coordinates offset)
+                mouse_world_x = mouse_x_unscaled + self.scroll[0]
+                mouse_world_y = mouse_y_unscaled + self.scroll[1]
+                
+                # Player position in world coords (center of rect)
+                player_x, player_y = self.cat.rect().center
+                
+                # Vector from player to mouse in world coords
+                vec_x = mouse_world_x - player_x
+                vec_y = mouse_world_y - player_y
+                
+                length = (vec_x**2 + vec_y**2)**0.5
+                if length != 0:
+                    normalized = (vec_x / length, vec_y / length)
+                else:
+                    normalized = (0, 0)
+
+                self.cat.vel[0] = normalized[0] * 15
+                self.cat.vel[1] = normalized[1] * 1 - 3
+                self.cat.dashing = True
+                
+            self.cat.move(self.tilemap,movement) 
+
             for event in pygame.event.get():
                  if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()

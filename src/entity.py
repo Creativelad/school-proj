@@ -46,12 +46,25 @@ class Entity:
         if self.collisions["down"]or self.collisions["up"]:
             self.vel[1]=0
 
-        if frame_movement[0]==0 :
-            return
 
-        if (frame_movement[0]<0) != self.direction: 
+
+        if (frame_movement[0]<0) != self.direction and frame_movement[0]!=0 : 
             self.image=pygame.transform.flip(self.image,True,False)
             self.direction=not self.direction
+
+        if self.vel[0]>0:
+            self.vel[0]=max(0,self.vel[0]-0.5)
+        
+        if self.vel[0]<0:
+            self.vel[0]=min(0,self.vel[0]+0.5)
+        
+        if self.vel[0]==0 and self.vel[1]==0:
+            self.dashing=False
+
+
+
+
+
 
     def render (self):
         self.game.screen.blit(self.image,(self.pos[0],self.pos[1]))

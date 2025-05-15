@@ -7,6 +7,8 @@ class Entity:
         self.hitbox = pygame.mask.from_surface(self.image).get_bounding_rects()[0].move(self.pos[0], self.pos[1])
         self.game=game
         self.vel=[0.0,0.0]
+        self.dash_vel=[0.0,0.0]
+        self.dash_norm=(0.0,0.0)
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
         self.size=size
         self.health=health
@@ -16,7 +18,7 @@ class Entity:
     def move(self,tilemap,movement=(0,0)):
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
 
-        frame_movement=(self.vel[0]+movement[0],self.vel[1]+movement[1])
+        frame_movement=(self.vel[0]+movement[0]+self.dash_vel[0],self.vel[1]+movement[1]+self.dash_vel[1])
 
         self.pos[0] += frame_movement[0]
 
@@ -46,7 +48,10 @@ class Entity:
         self.vel[1]=min(5,self.vel[1]+0.1)
         if self.collisions["down"]or self.collisions["up"]:
             self.vel[1]=0
-
+            self.dash_vel[1]=0
+        if self.collisions["left"] or self.collisions["right"]:
+            self.vel[0]=0
+            self.dash_vel[0]=0
 
 
         if (frame_movement[0]<0) != self.direction and frame_movement[0]!=0 : 
@@ -54,13 +59,29 @@ class Entity:
             self.direction=not self.direction
 
         if self.vel[0]>0:
-            self.vel[0]=max(0,self.vel[0]-0.5)
+            self.vel[0]=max(0,self.vel[0]-0.1)
         
         if self.vel[0]<0:
-            self.vel[0]=min(0,self.vel[0]+0.5)
+            self.vel[0]=min(0,self.vel[0]+0.1)
         
-        if self.vel[0]==0 and self.vel[1]==0:
+        if self.dash_vel[0]==0 and self.dash_vel[1]==0:
             self.dashing=False
+
+
+        if self.dashing:
+
+            for i in (0, 1):
+                    change = self.dash_norm[i] * 0.1
+                    # If dash_vel and dash_norm have the same sign
+                    if (self.dash_vel[i] > 0 and self.dash_norm[i] > 0) or (self.dash_vel[i] < 0 and self.dash_norm[i] < 0):
+                        self.dash_vel[i] -= change
+                        # Prevent overshooting zero
+                        if (self.dash_vel[i] > 0 and self.dash_vel[i] - change < 0) or (self.dash_vel[i] < 0 and self.dash_vel[i] - change > 0):
+                            self.dash_vel[i] = 0
+
+
+
+
 
 
 

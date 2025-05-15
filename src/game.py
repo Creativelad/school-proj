@@ -99,8 +99,9 @@ class Game:
                 else:
                     normalized = (0, 0)
 
-                self.cat.vel[0] = normalized[0] * 15
-                self.cat.vel[1] = normalized[1] * 1 - 3
+                self.cat.dash_norm=normalized
+                self.cat.dash_vel[0] = normalized[0] * 5
+                self.cat.dash_vel[1] = normalized[1] * 2 -3
                 self.cat.dashing = True
                 
             self.cat.move(self.tilemap,movement) 

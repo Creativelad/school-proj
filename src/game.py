@@ -3,6 +3,7 @@ import sys
 from player import Player
 from pathlib import Path
 from tilemap import Tilemap
+import random
 BASE_DIR = Path(__file__).resolve().parent
 class Game:
  
@@ -65,8 +66,10 @@ class Game:
             keys = pygame.key.get_pressed()
             movement = [0, 0]
             if keys[pygame.K_SPACE] and self.cat.vel[1] == 0: self.cat.vel[1]=-3
-            if keys[pygame.K_a]: movement[0] -= 3
-            if keys[pygame.K_d]: movement[0] += 3
+            if keys[pygame.K_a]: 
+                movement[0] -= 3
+            if keys[pygame.K_d]: 
+                movement[0] += 3
             self.cat.move(self.tilemap,movement)            
             for event in pygame.event.get():
                  if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -79,5 +82,6 @@ class Game:
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()
             self.clock.tick(60)
+
 
 

@@ -118,19 +118,21 @@
 ----------------------------------------
 
  Title:
-     Fantozzi's Footsteps (Grass/Sand & Stone)
+     Slime jump effect
 
  Author:
-     Fantozzi
+     KobatoGames
 
  URL:
-     https://opengameart.org/content/fantozzis-footsteps-grasssand-stone
+     https://opengameart.org/content/slime-jump-effect
 
  License(s):
      * CC0 ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
 
  File(s):
-    * Fantoozi-footsteps.7z ( extracted and saved in ../assets/sounds )
+    * slime_jump.wav ( extracted, re-encoded and saved in ../assets/sounds )
 
  Note:
      A copy of the CC0 license has been provided with this software for your reference.
+
+----------------------------------------

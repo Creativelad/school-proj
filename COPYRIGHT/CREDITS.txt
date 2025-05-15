@@ -114,3 +114,23 @@
      A copy of the CC0 license has been provided with this software for your reference.
 
 ----------------------------------------
+
+----------------------------------------
+
+ Title:
+     Fantozzi's Footsteps (Grass/Sand & Stone)
+
+ Author:
+     Fantozzi
+
+ URL:
+     https://opengameart.org/content/fantozzis-footsteps-grasssand-stone
+
+ License(s):
+     * CC0 ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+
+ File(s):
+    * Fantoozi-footsteps.7z ( extracted and saved in ../assets/sounds )
+
+ Note:
+     A copy of the CC0 license has been provided with this software for your reference.

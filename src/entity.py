@@ -11,6 +11,7 @@ class Entity:
         self.size=size
         self.health=health
         self.max_health=health
+        self.dashing = False
 
     def move(self,tilemap,movement=(0,0)):
         self.collisions = {"up":False,"down":False,"left":False,"right":False}

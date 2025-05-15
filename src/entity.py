@@ -14,6 +14,8 @@ class Entity:
         self.health=health
         self.max_health=health
         self.dashing = False
+        self.max_dash_cd = 5*60
+        self.dash_time =0 
 
     def move(self,tilemap,movement=(0,0)):
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
@@ -64,20 +66,27 @@ class Entity:
         if self.vel[0]<0:
             self.vel[0]=min(0,self.vel[0]+0.1)
         
-        if self.dash_vel[0]==0 and self.dash_vel[1]==0:
+        if self.dash_vel[0] == 0 and self.dash_vel[1]==0 and self.dashing:
             self.dashing=False
+            self.vel[1]=5
 
 
         if self.dashing:
+            
 
             for i in (0, 1):
                     change = self.dash_norm[i] * 0.1
                     # If dash_vel and dash_norm have the same sign
                     if (self.dash_vel[i] > 0 and self.dash_norm[i] > 0) or (self.dash_vel[i] < 0 and self.dash_norm[i] < 0):
                         self.dash_vel[i] -= change
+                        if i == 1:
+                         self.vel[1] = 0 
                         # Prevent overshooting zero
                         if (self.dash_vel[i] > 0 and self.dash_vel[i] - change < 0) or (self.dash_vel[i] < 0 and self.dash_vel[i] - change > 0):
                             self.dash_vel[i] = 0
+
+        if self.dash_time > 0:
+            self.dash_time = max(0,self.dash_time-1)
 
 
 

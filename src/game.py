@@ -67,16 +67,18 @@ class Game:
             keys = pygame.key.get_pressed()
             mouse = pygame.mouse.get_pressed()
             movement = [0, 0]
-            if keys[pygame.K_SPACE] and self.cat.vel[1] == 0:
+            if keys[pygame.K_SPACE] and self.cat.vel[1] == 0 and not self.cat.dashing:
                 self.cat.vel[1]=-3
                 pygame.mixer.music.load(BASE_DIR / "../assets/sounds/jump.ogg")
                 pygame.mixer.music.play(0,0.0)
+
             if keys[pygame.K_a]: 
                 movement[0] -= 3
+                print(self.cat.dash_time)
             if keys[pygame.K_d]: 
                 movement[0] += 3
              
-            if mouse[0] and not self.cat.dashing:
+            if mouse[0] and (not self.cat.dashing) and self.cat.dash_time == 0:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
 
                 mouse_x_unscaled = mouse_x / 2
@@ -100,9 +102,10 @@ class Game:
                     normalized = (0, 0)
 
                 self.cat.dash_norm=normalized
-                self.cat.dash_vel[0] = normalized[0] * 5
-                self.cat.dash_vel[1] = normalized[1] * 2 -3
+                self.cat.dash_vel[0] = normalized[0] * 7
+                self.cat.dash_vel[1] = normalized[1]*7
                 self.cat.dashing = True
+                self.cat.dash_time = self.cat.max_dash_cd
                 
             self.cat.move(self.tilemap,movement) 
 

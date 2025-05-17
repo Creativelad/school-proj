@@ -3,7 +3,6 @@ import sys
 from player import Player
 from pathlib import Path
 from tilemap import Tilemap
-import random
 BASE_DIR = Path(__file__).resolve().parent
 class Game:
  
@@ -55,6 +54,8 @@ class Game:
         pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.ogg")
         # v ENABLE THIS BEFORE MAIN RELASE v 
         pygame.mixer.music.play(-1,0.0)
+        jump_sound = pygame.mixer.Sound(BASE_DIR / "../assets/sounds/jump.ogg")
+
         
 
         while self.running:
@@ -69,8 +70,7 @@ class Game:
             movement = [0, 0]
             if keys[pygame.K_SPACE] and self.cat.vel[1] == 0 and not self.cat.dashing:
                 self.cat.vel[1]=-3
-                pygame.mixer.music.load(BASE_DIR / "../assets/sounds/jump.ogg")
-                pygame.mixer.music.play(0,0.0)
+                jump_sound.play()
 
             if keys[pygame.K_a]: 
                 movement[0] -= self.cat.speed

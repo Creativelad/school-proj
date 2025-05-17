@@ -1,6 +1,6 @@
 import pygame
 class Entity:
-    def __init__(self,x,y,image,game,health,size=(1,1)):
+    def __init__(self,x,y,image,game,health,speed,dash_speed,size=(1,1)):
         self.pos=[x,y]
         self.image = image.convert_alpha()
         self.direction=True
@@ -16,6 +16,9 @@ class Entity:
         self.dashing = False
         self.max_dash_cd = 5*60
         self.dash_time =0 
+        self.in_dash_time=0.2*60
+        self.speed = speed
+        self.dash_speed = dash_speed
 
     def move(self,tilemap,movement=(0,0)):
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
@@ -68,7 +71,7 @@ class Entity:
         
         if self.dash_vel[0] == 0 and self.dash_vel[1]==0 and self.dashing:
             self.dashing=False
-            self.vel[1]=5
+            self.vel[1]=2
 
 
         if self.dashing:
@@ -87,6 +90,13 @@ class Entity:
 
         if self.dash_time > 0:
             self.dash_time = max(0,self.dash_time-1)
+
+            # if abs(self.dash_vel[0]) < abs(self.dash_norm[0] * 19) and abs(self.dash_vel[1]) < abs(self.dash_norm[1]) * 19:
+            # self.dash_vel[0] = 0
+        #  self.dash_vel[1] = 0 
+        if self.dash_time < (self.max_dash_cd-self.in_dash_time):
+            self.dash_vel[0]=0.0
+            self.dash_vel[1]=0.0
 
 
 

@@ -14,7 +14,7 @@ class Player(Entity):
     
 
     def __init__(self,x,y,image,game,max_health,shield):  
-        super().__init__(x,y,image,game,max_health,size=(2,1))
+        super().__init__(x,y,image,game,max_health,3,20,size=(2,1))
         self.shield=shield
         self.health=4
 

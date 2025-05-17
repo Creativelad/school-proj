@@ -73,10 +73,10 @@ class Game:
                 pygame.mixer.music.play(0,0.0)
 
             if keys[pygame.K_a]: 
-                movement[0] -= 3
+                movement[0] -= self.cat.speed
                 print(self.cat.dash_time)
             if keys[pygame.K_d]: 
-                movement[0] += 3
+                movement[0] += self.cat.speed
              
             if mouse[0] and (not self.cat.dashing) and self.cat.dash_time == 0:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -102,8 +102,8 @@ class Game:
                     normalized = (0, 0)
 
                 self.cat.dash_norm=normalized
-                self.cat.dash_vel[0] = normalized[0] * 7
-                self.cat.dash_vel[1] = normalized[1]*7
+                self.cat.dash_vel[0] = normalized[0]*self.cat.dash_speed 
+                self.cat.dash_vel[1] = normalized[1]*self.cat.dash_speed//2
                 self.cat.dashing = True
                 self.cat.dash_time = self.cat.max_dash_cd
                 

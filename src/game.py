@@ -17,7 +17,6 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.is_resting_forward = True
-        self.platform = pygame.Rect(100,450,675,166)
         self.assets = {
             "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png").convert(),
             "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png").convert(),
@@ -37,8 +36,10 @@ class Game:
         self.scroll = [0.0,0.0]
         self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png").convert()
         self.bg = pygame.transform.scale(self.bg,(self.res[0],self.res[1]))
+        self.sword_right = pygame.image.load(BASE_DIR / "../assets/images/sword.png").convert_alpha()
+        self.sword_left = pygame.transform.flip(self.sword_right, True, False)
         cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
-        cat_image= pygame.transform.scale(cat_image,(32,20))
+        cat_image = pygame.transform.scale(cat_image,(32,20))
         
         spawn = self.tilemap.extract("player_spawn", False)
         if spawn:
@@ -74,7 +75,7 @@ class Game:
 
             if keys[pygame.K_a]: 
                 movement[0] -= self.cat.speed
-                print(self.cat.dash_time)
+                #print(self.cat.dash_time)
             if keys[pygame.K_d]: 
                 movement[0] += self.cat.speed
              
@@ -106,7 +107,18 @@ class Game:
                 self.cat.dash_vel[1] = normalized[1]*self.cat.dash_speed//2
                 self.cat.dashing = True
                 self.cat.dash_time = self.cat.max_dash_cd
-                
+               
+            if mouse[2]:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                cat_x = self.cat.pos[0] - render_scroll[0]
+                cat_y = self.cat.pos[1] - render_scroll[1]
+                if cat_x < mouse_x:
+                    cat_x += 32
+                    self.screen.blit(self.sword_right, (cat_x, cat_y))
+                elif cat_x > mouse_x:
+                    cat_x -= 32
+                    self.screen.blit(self.sword_left, (cat_x, cat_y))
+
             self.cat.move(self.tilemap,movement) 
 
             for event in pygame.event.get():

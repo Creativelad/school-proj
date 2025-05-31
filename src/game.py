@@ -112,12 +112,11 @@ class Game:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 cat_x = self.cat.pos[0] - render_scroll[0]
                 cat_y = self.cat.pos[1] - render_scroll[1]
-                if cat_x < mouse_x:
-                    cat_x += 32
-                    self.screen.blit(self.sword_right, (cat_x, cat_y))
-                elif cat_x > mouse_x:
-                    cat_x -= 32
-                    self.screen.blit(self.sword_left, (cat_x, cat_y))
+                if cat_x < (mouse_x + render_scroll[0]):
+                    self.screen.blit(self.sword_right, (cat_x + 32, cat_y))
+                else:
+                    self.screen.blit(self.sword_left, (cat_x - 32, cat_y))
+                print(f"mouse x: {mouse_x}, cat x: {cat_y}")
 
             self.cat.move(self.tilemap,movement) 
 

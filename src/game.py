@@ -109,15 +109,33 @@ class Game:
                 self.cat.dash_time = self.cat.max_dash_cd
                
             if mouse[2]:
+                
                 mouse_x, mouse_y = pygame.mouse.get_pos()
-                cat_x = self.cat.pos[0] - render_scroll[0]
-                cat_y = self.cat.pos[1] - render_scroll[1]
-                if cat_x < (mouse_x + render_scroll[0]):
-                    self.screen.blit(self.sword_right, (cat_x + 32, cat_y))
-                else:
-                    self.screen.blit(self.sword_left, (cat_x - 32, cat_y))
-                print(f"mouse x: {mouse_x}, cat x: {cat_y}")
+                
+                # Correct for 2x scaling
+                mouse_x_unscaled = mouse_x / 2
+                mouse_y_unscaled = mouse_y / 2
 
+                # Convert to world coordinates using the smoothed scroll
+                world_mouse_x = mouse_x_unscaled + self.scroll[0]
+                world_mouse_y = mouse_y_unscaled + self.scroll[1]
+
+                # Player position in world coordinates
+                cat_x = self.cat.pos[0]
+                cat_y = self.cat.pos[1]
+
+                # Convert to screen coordinates for blitting
+                screen_cat_x = cat_x - self.scroll[0]
+                screen_cat_y = cat_y - self.scroll[1]
+
+                if world_mouse_x > cat_x:
+                    self.screen.blit(self.sword_right, (screen_cat_x + 32, screen_cat_y))
+                else:
+                    self.screen.blit(self.sword_left, (screen_cat_x - 32, screen_cat_y))
+
+                print(f"mouse_x(world): {world_mouse_x}, cat_x: {cat_x}")
+
+     
             self.cat.move(self.tilemap,movement) 
 
             for event in pygame.event.get():

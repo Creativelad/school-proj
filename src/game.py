@@ -1,4 +1,5 @@
 import pygame
+import math
 import sys
 from player import Player
 from pathlib import Path
@@ -8,6 +9,8 @@ class Game:
  
 
     def __init__(self):
+
+
         pygame.init()
         pygame.mixer.init()
         self.font = pygame.font.Font(BASE_DIR / "../assets/fonts/font1.ttf", 16)
@@ -108,34 +111,40 @@ class Game:
                 self.cat.dashing = True
                 self.cat.dash_time = self.cat.max_dash_cd
                
-            if mouse[2]:
-                
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                
-                # Correct for 2x scaling
-                mouse_x_unscaled = mouse_x / 2
-                mouse_y_unscaled = mouse_y / 2
+            if mouse[2] and not self.cat.swinging:
+                mouse_x, _ = pygame.mouse.get_pos()
+                world_mouse_x = mouse_x / 2 + render_scroll[0]
+                self.cat.swing_side = "right" if world_mouse_x > self.cat.pos[0] else "left"
+                self.cat.swinging = True
+                self.cat.swing_progress = 0     
 
-                # Convert to world coordinates using the smoothed scroll
-                world_mouse_x = mouse_x_unscaled + self.scroll[0]
-                world_mouse_y = mouse_y_unscaled + self.scroll[1]
+            if self.cat.swinging:
+                 cat_center_x, cat_center_y = self.cat.rect().center
+                 screen_cat_x = cat_center_x - render_scroll[0]
+                 screen_cat_y = cat_center_y - render_scroll[1]
+                 angle_steep=180/self.cat.swing_duration
 
-                # Player position in world coordinates
-                cat_x = self.cat.pos[0]
-                cat_y = self.cat.pos[1]
+                 angle = -90 + self.cat.swing_progress  *angle_steep
+                 radians = angle * math.pi / 180
+                 radius = 32
 
-                # Convert to screen coordinates for blitting
-                screen_cat_x = cat_x - self.scroll[0]
-                screen_cat_y = cat_y - self.scroll[1]
+                 if self.cat.swing_side == "right":
+                     sx = screen_cat_x + radius * math.cos(radians)
+                     sy = screen_cat_y + radius * math.sin(radians)
+                     sword_img = pygame.transform.rotate(self.sword_right, -angle)
+                 else:
+                     sx = screen_cat_x - radius * math.cos(radians)
+                     sy = screen_cat_y + radius * math.sin(radians)
+                     sword_img = pygame.transform.rotate(self.sword_left, angle)
 
-                if world_mouse_x > cat_x:
-                    self.screen.blit(self.sword_right, (screen_cat_x + 32, screen_cat_y))
-                else:
-                    self.screen.blit(self.sword_left, (screen_cat_x - 32, screen_cat_y))
+                 rect = sword_img.get_rect(center=(sx, sy))
+                 self.screen.blit(sword_img, rect.topleft)
 
-                print(f"mouse_x(world): {world_mouse_x}, cat_x: {cat_x}")
+                 self.cat.swing_progress += 1
+                 if self.cat.swing_progress > self.cat.swing_duration:
+                     self.cat.swinging = False
 
-     
+
             self.cat.move(self.tilemap,movement) 
 
             for event in pygame.event.get():

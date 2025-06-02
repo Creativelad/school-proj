@@ -17,6 +17,13 @@ class Player(Entity):
         super().__init__(x,y,image,game,max_health,3,20,size=(2,1))
         self.shield=shield
         self.health=4
+        self.swinging = False
+        self.swing_progress = 0
+        self.swing_side = "right"
+        self.swinging = False
+        self.swing_progress = 0
+        self.swing_side = "right"
+        self.swing_duration =20
 
     def move(self,tilemap,movement=(0,0)):
         super().move(tilemap,movement)

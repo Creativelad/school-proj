@@ -156,12 +156,15 @@ class Game:
                  # Pick starting angle based on direction
                  start_angle = {
                      "right": -45,
-                     "left": 135,
+                     "left": -135,
                      "up": -135,
                      "down": 45
                  }[self.cat.swing_dir]
+                 if self.cat.swing_dir == "left":
+                     current_angle = start_angle - arc_angle * progress_ratio  # Reverse swing direction for left
+                 else:
+                     current_angle = start_angle + arc_angle * progress_ratio
 
-                 current_angle = start_angle + arc_angle * progress_ratio
                  radians = math.radians(current_angle)
 
                  sword_x = center_x + radius * math.cos(radians)

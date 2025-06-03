@@ -1,6 +1,7 @@
 import pygame
 import math
 import sys
+import time
 from player import Player
 from pathlib import Path
 from tilemap import Tilemap
@@ -50,6 +51,11 @@ class Game:
             self.cat = Player(x*self.tilemap.tile_size, y*self.tilemap.tile_size, cat_image, self, 5, 5)
         else:
             self.cat = Player(0, 0, cat_image, self, 5, 5)
+
+        self.last_swing_time = 0.0
+        self.real_swing_cooldown = 0.2
+        self.swing_cooldown = self.real_swing_cooldown+self.cat.swing_duration/60
+
 
 
 
@@ -111,40 +117,53 @@ class Game:
                 self.cat.dashing = True
                 self.cat.dash_time = self.cat.max_dash_cd
                
-            if mouse[2] and not self.cat.swinging:
-                mouse_x, _ = pygame.mouse.get_pos()
-                world_mouse_x = mouse_x / 2 + render_scroll[0]
-                self.cat.swing_side = "right" if world_mouse_x > self.cat.pos[0] else "left"
-                self.cat.swinging = True
-                self.cat.swing_progress = 0     
+            if mouse[2] and not self.cat.swinging and time.time() - self.last_swing_time >= self.swing_cooldown:
+                 mouse_x, mouse_y = pygame.mouse.get_pos()
+                 player_x, player_y = self.cat.rect().center
+                 dx = (mouse_x / 2) - (player_x - render_scroll[0])
+                 dy = (mouse_y / 2) - (player_y - render_scroll[1])
+
+                 if abs(dx) > abs(dy):
+                     self.cat.swing_dir = "right" if dx > 0 else "left"
+                 else:
+                     self.cat.swing_dir = "down" if dy > 0 else "up"
+
+                 self.cat.swinging = True
+                 self.cat.swing_progress = 0
+                 self.last_swing_time = time.time()
+
 
             if self.cat.swinging:
-                 cat_center_x, cat_center_y = self.cat.rect().center
-                 screen_cat_x = cat_center_x - render_scroll[0]
-                 screen_cat_y = cat_center_y - render_scroll[1]
-                 angle_steep=180/self.cat.swing_duration
+                 center_x, center_y = self.cat.rect().center
+                 center_x -= render_scroll[0]
+                 center_y -= render_scroll[1]
 
-                 angle = -90 + self.cat.swing_progress  *angle_steep
-                 radians = angle * math.pi / 180
+                 progress_ratio = self.cat.swing_progress / self.cat.swing_duration
+                 arc_angle = 90  # degrees of swing arc
                  radius = 32
 
-                 if self.cat.swing_side == "right":
-                     sx = screen_cat_x + radius * math.cos(radians)
-                     sy = screen_cat_y + radius * math.sin(radians)
-                     sword_img = pygame.transform.rotate(self.sword_right, -angle)
-                 else:
-                     sx = screen_cat_x - radius * math.cos(radians)
-                     sy = screen_cat_y + radius * math.sin(radians)
-                     sword_img = pygame.transform.rotate(self.sword_left, angle)
+                 # Pick starting angle based on direction
+                 start_angle = {
+                     "right": -45,
+                     "left": 135,
+                     "up": -135,
+                     "down": 45
+                 }[self.cat.swing_dir]
 
-                 rect = sword_img.get_rect(center=(sx, sy))
-                 self.screen.blit(sword_img, rect.topleft)
+                 current_angle = start_angle + arc_angle * progress_ratio
+                 radians = math.radians(current_angle)
 
+                 sword_x = center_x + radius * math.cos(radians)
+                 sword_y = center_y + radius * math.sin(radians)
+
+                 rotated_sword = pygame.transform.rotate(self.sword_right, -current_angle)
+                 rect = rotated_sword.get_rect(center=(sword_x, sword_y))
+                 self.screen.blit(rotated_sword, rect.topleft)            
                  self.cat.swing_progress += 1
                  if self.cat.swing_progress > self.cat.swing_duration:
-                     self.cat.swinging = False
-
-
+                    self.cat.swinging = False
+            
+            
             self.cat.move(self.tilemap,movement) 
 
             for event in pygame.event.get():

@@ -2,6 +2,7 @@ import pygame
 import math
 import sys
 import time
+from enemy import Enemy
 from player import Player
 from pathlib import Path
 from tilemap import Tilemap
@@ -52,6 +53,14 @@ class Game:
         else:
             self.cat = Player(0, 0, cat_image, self, 5, 5)
 
+        enemy_spawners=["rat"]
+        self.enemies = []
+        for enemy in enemy_spawners:
+            spawn = self.tilemap.extract(enemy, False)
+            if spawn:
+                for s in spawn:
+                    x, y = s["pos"]
+                    self.enemies.append(Enemy(x*self.tilemap.tile_size,y*self.tilemap.tile_size,self.assets[enemy],self,1,1))
         self.last_swing_time = 0.0
         self.real_swing_cooldown = 0.2
         self.swing_cooldown = self.real_swing_cooldown+self.cat.swing_duration/60
@@ -84,11 +93,13 @@ class Game:
 
             if keys[pygame.K_a]: 
                 movement[0] -= self.cat.speed
+                self.cat.direction=True
                 #print(self.cat.dash_time)
             if keys[pygame.K_d]: 
                 movement[0] += self.cat.speed
+                self.cat.direction=False
              
-            if mouse[0] and (not self.cat.dashing) and self.cat.dash_time == 0:
+            if mouse[2] and (not self.cat.dashing) and self.cat.dash_time == 0:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
 
                 mouse_x_unscaled = mouse_x / 2
@@ -117,7 +128,7 @@ class Game:
                 self.cat.dashing = True
                 self.cat.dash_time = self.cat.max_dash_cd
                
-            if mouse[2] and not self.cat.swinging and time.time() - self.last_swing_time >= self.swing_cooldown:
+            if mouse[0] and not self.cat.swinging and time.time() - self.last_swing_time >= self.swing_cooldown:
                  mouse_x, mouse_y = pygame.mouse.get_pos()
                  player_x, player_y = self.cat.rect().center
                  dx = (mouse_x / 2) - (player_x - render_scroll[0])
@@ -170,6 +181,11 @@ class Game:
                  if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     sys.exit()
+
+            for enemy in self.enemies.copy():
+                enemy.move(self.tilemap,(0,0))
+                enemy.render(render_scroll)
+
             self.cat.render(offset=render_scroll)
             #print(tilemap.physics_rects_around(cat.pos,(4,2)))
             #pygame.display.update()

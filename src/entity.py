@@ -20,6 +20,7 @@ class Entity:
         self.speed = speed
         self.dash_speed = dash_speed
 
+
     def move(self,tilemap,movement=(0,0)):
         self.collisions = {"up":False,"down":False,"left":False,"right":False}
 
@@ -59,9 +60,9 @@ class Entity:
             self.dash_vel[0]=0
 
 
-        if (frame_movement[0]<0) != self.direction and frame_movement[0]!=0 : 
-            self.image=pygame.transform.flip(self.image,True,False)
-            self.direction=not self.direction
+            #if (frame_movement[0]<0) != self.direction and frame_movement[0]!=0 : 
+            #self.image=pygame.transform.flip(self.image,True,False)
+            #self.direction=not self.direction
 
         if self.vel[0]>0:
             self.vel[0]=max(0,self.vel[0]-0.1)
@@ -107,8 +108,8 @@ class Entity:
 
 
 
-    def render (self):
-        self.game.screen.blit(self.image,(self.pos[0],self.pos[1]))
+    def render (self,offset=(0,0)):
+        self.game.screen.blit(pygame.transform.flip(self.image, True, False) if not self.direction else self.image, (self.pos[0] - offset[0] , self.pos[1] - offset[1]))
 
     def rect(self):
         return pygame.Rect(self.pos[0],self.pos[1],self.size[0]*16,16*self.size[1])

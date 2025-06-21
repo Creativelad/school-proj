@@ -64,9 +64,7 @@ class Game:
         self.last_swing_time = 0.0
         self.real_swing_cooldown = 0.2
         self.swing_cooldown = self.real_swing_cooldown+self.cat.swing_duration/60
-
-
-
+        self.fcount = 0
 
     def run(self):
 
@@ -98,7 +96,7 @@ class Game:
             if keys[pygame.K_d]: 
                 movement[0] += self.cat.speed
                 self.cat.direction=False
-             
+
             if mouse[2] and (not self.cat.dashing) and self.cat.dash_time == 0:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -176,14 +174,18 @@ class Game:
                  self.cat.swing_progress += 1
                  if self.cat.swing_progress > self.cat.swing_duration:
                     self.cat.swinging = False
-            
-            
-            self.cat.move(self.tilemap,movement) 
+
+            self.cat.move(self.tilemap,movement)
 
             for event in pygame.event.get():
                  if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     sys.exit()
+                 if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+                     self.fcount += 1
+                     if self.fcount == 7:
+                         self.fcount = 0
+                         pygame.mixer.Sound(BASE_DIR / "../assets/sounds/meow.ogg").play()
 
             for enemy in self.enemies.copy():
                 enemy.move(self.tilemap,(0,0))

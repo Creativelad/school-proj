@@ -36,7 +36,7 @@ class Game:
 
         }
         self.tilemap= Tilemap(self)
-        self.level=1
+        self.level=0
         self.load_level(self.level)
         
         # try:

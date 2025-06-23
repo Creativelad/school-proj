@@ -29,7 +29,8 @@ class Game:
             "player_spawn": pygame.transform.scale(pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
 ,(32,16)),
             "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha(),
-            "gun": (pygame.image.load(BASE_DIR / "../assets/enemy/gun.png").convert_alpha())
+            "gun": (pygame.image.load(BASE_DIR / "../assets/enemy/gun.png").convert_alpha()),
+            "bullets":(pygame.image.load(BASE_DIR / "../assets/enemy/bullet.png").convert_alpha())
 
 
         } 

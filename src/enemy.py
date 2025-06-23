@@ -21,8 +21,15 @@ class Enemy(Entity):
             else:
                 self.direction = not self.direction
             self.walking= max(0, self.walking - 1)
+            if not self.walking:
+                dis=(self.game.cat.pos[0] - self.pos[0], self.game.cat.pos[1] - self.pos[1])
+                if abs(dis[1]) <16:
+                    if (self.direction and dis[0]< 0):
+                        self.game.bullets.append([[self.rect().centerx-7,self.rect().centery],-1.5,0])
+                    if (not self.direction and dis[0] > 0):
+                        self.game.bullets.append([[self.rect().centerx+7,self.rect().centery],1.5,0])
         elif random.random() < 0.01:
-            self.walking = random.randint(120,500)  
+            self.walking = random.randint(30,400)  
             self.direction = random.choice([True, False])
         super().move(tilemap, movement)
 

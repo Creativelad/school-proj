@@ -2,7 +2,7 @@ from editor import Editor
 from game import Game
 
 if __name__ == "__main__":
-    editormode=True
+    editormode=False
     if editormode:
         game= Editor()
     else:

@@ -30,7 +30,8 @@ class Game:
 ,(32,16)),
             "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha(),
             "gun": (pygame.image.load(BASE_DIR / "../assets/enemy/gun.png").convert_alpha()),
-            "bullets":(pygame.image.load(BASE_DIR / "../assets/enemy/bullet.png").convert_alpha())
+            "bullets":(pygame.image.load(BASE_DIR / "../assets/enemy/bullet.png").convert_alpha()),
+            "flag":(pygame.image.load(BASE_DIR / "../assets/images/flag.png")).convert_alpha()
 
 
         }
@@ -263,6 +264,7 @@ class Game:
                     if self.cat.health <= 0:
                         self.level= 0
                         self.load_level(self.level)
+                        break
                 if self.cat.swinging:
                      sword_point = pygame.math.Vector2(self.sword_x, self.sword_y)  
                      bullet_point = pygame.math.Vector2(bullet[0][0] - self.scroll[0], bullet[0][1] - self.scroll[1])

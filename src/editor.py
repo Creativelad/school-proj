@@ -22,7 +22,8 @@ class Editor:
             "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert_alpha(),
             "player_spawn": pygame.transform.scale(pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
 ,(32,16)),
-            "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha()
+            "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha(),
+            "flag":(pygame.image.load(BASE_DIR / "../assets/images/flag.png")).convert_alpha()
 
 
         }      

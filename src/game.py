@@ -125,6 +125,7 @@ class Game:
 
         self.sword_x = 0.0 
         self.sword_y = 0.0
+        regen_timer = 0
 
         while self.running:
             #self.screen.fill((30, 30, 46))
@@ -283,6 +284,11 @@ class Game:
                  if self.cat.rect().colliderect(flag_rect):
                      self.level = self.level+1
                      self.load_level(self.level)
+            regen_timer+=1
+            if regen_timer>300:
+                regen_timer=0
+                if self.cat.health < self.cat.max_health:
+                 self.cat.health+=1
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()

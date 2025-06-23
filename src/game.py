@@ -25,10 +25,11 @@ class Game:
         self.assets = {
             "sand_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_brick.png").convert(),
             "sand_cracked_brick":pygame.image.load(BASE_DIR/"../assets/images/sand_cracked_brick.png").convert(),
-            "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert(),
+        "sand": pygame.image.load(BASE_DIR/"../assets/images/sand.png").convert(),
             "player_spawn": pygame.transform.scale(pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
 ,(32,16)),
-            "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha()
+            "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha(),
+            "gun": (pygame.image.load(BASE_DIR / "../assets/enemy/gun.png").convert_alpha())
 
 
         } 

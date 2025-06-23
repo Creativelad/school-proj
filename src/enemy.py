@@ -1,5 +1,6 @@
 from entity import Entity
 import random
+import pygame
 
 class Enemy(Entity):
     def __init__(self, x, y, image, game, max_health, damage,dash_speed=0):
@@ -22,3 +23,10 @@ class Enemy(Entity):
         elif random.random() < 0.01:
             self.walking = random.randint(30,120)  # Randomly start walking for 1 to 60 frames
         super().move(tilemap, movement)
+
+    def render(self,offset=(0,0)):
+        super().render(offset)
+        if self.direction:
+            self.game.screen.blit(pygame.transform.flip(self.game.assets["gun"], True, False), (self.rect().centerx-4-self.game.assets["gun"].get_width() - offset[0],self.rect().centery - offset[1]))
+        else:
+            self.game.screen.blit(self.game.assets["gun"], (self.rect().centerx+10-self.game.assets["gun"].get_width() - offset[0],self.rect().centery - offset[1]))

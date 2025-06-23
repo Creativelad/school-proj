@@ -19,7 +19,7 @@ class Player(Entity):
         super().__init__(x,y,image,game,max_health,3,20,size=(2,1))
         self.shield=max_shield
         self.max_shield=max_shield
-        self.health=4
+        self.health=max_health
         self.swinging = False
         self.swing_progress = 0
         self.swing_side = "right"

@@ -1,3 +1,4 @@
+from os import symlink
 import pygame
 import math
 import sys
@@ -76,7 +77,8 @@ class Game:
         pygame.mixer.music.play(-1,0.0)
         jump_sound = pygame.mixer.Sound(BASE_DIR / "../assets/sounds/jump.ogg")
 
-        
+        sword_x = None
+        sword_y = None
 
         while self.running:
             #self.screen.fill((30, 30, 46))
@@ -209,6 +211,18 @@ class Game:
                 elif not self.cat.dashing:
                     if self.cat.rect().collidepoint(bullet[0]):
                         self.bullets.remove(bullet)
+                        if self.cat.shield>0:
+                            self.cat.shield -= 1
+                        elif self.cat.health > 0:
+                            self.cat.health -= 1
+                            if self.cat.health <= 0:
+                                pygame.quit()
+                                sys.exit()
+                if self.cat.swinging:
+                     sword_point = pygame.math.Vector2(sword_x, sword_y)  # sword_x, sword_y already calculated earlier
+                     bullet_point = pygame.math.Vector2(bullet[0][0] - self.scroll[0], bullet[0][1] - self.scroll[1])
+                     if sword_point.distance_to(bullet_point) < 16:  # adjust radius if needed
+                         self.bullets.remove(bullet)
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()

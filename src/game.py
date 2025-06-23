@@ -1,4 +1,3 @@
-from os import symlink
 import pygame
 import math
 import sys
@@ -77,8 +76,8 @@ class Game:
         pygame.mixer.music.play(-1,0.0)
         jump_sound = pygame.mixer.Sound(BASE_DIR / "../assets/sounds/jump.ogg")
 
-        sword_x = None
-        sword_y = None
+        sword_x = 0.0 
+        sword_y = 0.0
 
         while self.running:
             #self.screen.fill((30, 30, 46))
@@ -195,6 +194,12 @@ class Game:
             for enemy in self.enemies.copy():
                 enemy.move(self.tilemap,(0,0))
                 enemy.render(render_scroll)
+                if self.cat.swinging:
+                     sword_point = pygame.math.Vector2(sword_x, sword_y)  
+                     enemy_point = pygame.math.Vector2(enemy.pos[0] - self.scroll[0],enemy.pos[1] - self.scroll[1])
+                     if sword_point.distance_to(enemy_point) < 16:  # adjust radius if needed
+                         self.enemies.remove(enemy)
+
 
             self.cat.render(offset=render_scroll)
             #print(tilemap.physics_rects_around(cat.pos,(4,2)))
@@ -219,7 +224,7 @@ class Game:
                                 pygame.quit()
                                 sys.exit()
                 if self.cat.swinging:
-                     sword_point = pygame.math.Vector2(sword_x, sword_y)  # sword_x, sword_y already calculated earlier
+                     sword_point = pygame.math.Vector2(sword_x, sword_y)  
                      bullet_point = pygame.math.Vector2(bullet[0][0] - self.scroll[0], bullet[0][1] - self.scroll[1])
                      if sword_point.distance_to(bullet_point) < 16:  # adjust radius if needed
                          self.bullets.remove(bullet)

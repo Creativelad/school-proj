@@ -36,7 +36,7 @@ class Game:
 
         }
         self.tilemap= Tilemap(self)
-        self.level=0
+        self.level=1
         self.load_level(self.level)
         
         # try:
@@ -46,7 +46,7 @@ class Game:
         #
         # self.scroll = [0.0,0.0]
         # self.bullets = []
-        # self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png").convert()
+        # self.bg = pygame.image.load(BASE_DIRf/"../assets/images/bg.png").convert()
         # self.bg = pygame.transform.scale(self.bg,(self.res[0],self.res[1]))
         # self.sword_right = pygame.image.load(BASE_DIR / "../assets/images/sword.png").convert_alpha()
         # self.sword_left = pygame.transform.flip(self.sword_right, True, False)
@@ -108,6 +108,11 @@ class Game:
         self.cat.shield=self.cat.max_shield
         self.sword_x = 0.0 
         self.sword_y = 0.0
+        flag_spawn = self.tilemap.extract("flag", True)
+        self.flag_pos = None
+        if flag_spawn:
+            x, y = flag_spawn[0]["pos"]
+            self.flag_pos = (x * self.tilemap.tile_size, y * self.tilemap.tile_size)
 
 
 
@@ -270,7 +275,14 @@ class Game:
                      bullet_point = pygame.math.Vector2(bullet[0][0] - self.scroll[0], bullet[0][1] - self.scroll[1])
                      if sword_point.distance_to(bullet_point) < 16:  # adjust radius if needed
                          self.bullets.remove(bullet)
-            
+
+
+
+            if self.flag_pos:
+                 flag_rect = pygame.Rect(self.flag_pos[0], self.flag_pos[1], 16, 16)  # assuming 16x16 flag size
+                 if self.cat.rect().colliderect(flag_rect):
+                     self.level = self.level+1
+                     self.load_level(self.level)
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()

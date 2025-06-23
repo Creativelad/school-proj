@@ -33,13 +33,48 @@ class Game:
             "bullets":(pygame.image.load(BASE_DIR / "../assets/enemy/bullet.png").convert_alpha())
 
 
-        } 
-        self.tilemap = Tilemap(self)
-        try:
-           self.tilemap.load('map.json')
-        except FileNotFoundError:
-            pass
+        }
+        self.tilemap= Tilemap(self)
+        self.level=0
+        self.load_level(self.level)
+        
+        # try:
+        #    self.tilemap.load('map.json')
+        # except FileNotFoundError:
+        #     pass
+        #
+        # self.scroll = [0.0,0.0]
+        # self.bullets = []
+        # self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png").convert()
+        # self.bg = pygame.transform.scale(self.bg,(self.res[0],self.res[1]))
+        # self.sword_right = pygame.image.load(BASE_DIR / "../assets/images/sword.png").convert_alpha()
+        # self.sword_left = pygame.transform.flip(self.sword_right, True, False)
+        # cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
+        # cat_image = pygame.transform.scale(cat_image,(32,20))
+        #
+        # spawn = self.tilemap.extract("player_spawn", False)
+        # if spawn:
+        #     x, y = spawn[0]["pos"]
+        #     self.cat = Player(x*self.tilemap.tile_size, y*self.tilemap.tile_size, cat_image, self, 5, 5)
+        # else:
+        #     self.cat = Player(0, 0, cat_image, self, 5, 5)
+        #
+        # enemy_spawners=["rat"]
+        # self.enemies = []
+        # for enemy in enemy_spawners:
+        #     spawn = self.tilemap.extract(enemy, False)
+        #     if spawn:ok 
+        #         for s in spawn:
+        #             x, y = s["pos"]
+        #             self.enemies.append(Enemy(x*self.tilemap.tile_size,y*self.tilemap.tile_size,self.assets[enemy],self,1,1))
+        # self.last_swing_time = 0.0
+        # self.real_swing_cooldown = 0.2
+        # self.swing_cooldown = self.real_swing_cooldown+self.cat.swing_duration/60
+        # self.fcount = 0
 
+    def load_level(self,map_id):
+        
+        self.tilemap.load(BASE_DIR.parent /"assets" / "levels" / f"{map_id}.json")
         self.scroll = [0.0,0.0]
         self.bullets = []
         self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png").convert()
@@ -68,6 +103,12 @@ class Game:
         self.real_swing_cooldown = 0.2
         self.swing_cooldown = self.real_swing_cooldown+self.cat.swing_duration/60
         self.fcount = 0
+        self.cat.health=self.cat.max_health
+        self.cat.shield=self.cat.max_shield
+        self.sword_x = 0.0 
+        self.sword_y = 0.0
+
+
 
     def run(self):
 
@@ -76,8 +117,8 @@ class Game:
         pygame.mixer.music.play(-1,0.0)
         jump_sound = pygame.mixer.Sound(BASE_DIR / "../assets/sounds/jump.ogg")
 
-        sword_x = 0.0 
-        sword_y = 0.0
+        self.sword_x = 0.0 
+        self.sword_y = 0.0
 
         while self.running:
             #self.screen.fill((30, 30, 46))
@@ -169,11 +210,11 @@ class Game:
 
                  radians = math.radians(current_angle)
 
-                 sword_x = center_x + radius * math.cos(radians)
-                 sword_y = center_y + radius * math.sin(radians)
+                 self.sword_x = center_x + radius * math.cos(radians)
+                 self.sword_y = center_y + radius * math.sin(radians)
 
                  rotated_sword = pygame.transform.rotate(self.sword_right, -current_angle)
-                 rect = rotated_sword.get_rect(center=(sword_x, sword_y))
+                 rect = rotated_sword.get_rect(center=(self.sword_x, self.sword_y))
                  self.screen.blit(rotated_sword, rect.topleft)            
                  self.cat.swing_progress += 1
                  if self.cat.swing_progress > self.cat.swing_duration:
@@ -195,7 +236,7 @@ class Game:
                 enemy.move(self.tilemap,(0,0))
                 enemy.render(render_scroll)
                 if self.cat.swinging:
-                     sword_point = pygame.math.Vector2(sword_x, sword_y)  
+                     sword_point = pygame.math.Vector2(self.sword_x, self.sword_y)  
                      enemy_point = pygame.math.Vector2(enemy.pos[0] - self.scroll[0],enemy.pos[1] - self.scroll[1])
                      if sword_point.distance_to(enemy_point) < 16:  # adjust radius if needed
                          self.enemies.remove(enemy)
@@ -220,10 +261,10 @@ class Game:
                     elif self.cat.health > 0:
                         self.cat.health -= 1
                     if self.cat.health <= 0:
-                        pygame.quit()
-                        sys.exit()
+                        self.level= 0
+                        self.load_level(self.level)
                 if self.cat.swinging:
-                     sword_point = pygame.math.Vector2(sword_x, sword_y)  
+                     sword_point = pygame.math.Vector2(self.sword_x, self.sword_y)  
                      bullet_point = pygame.math.Vector2(bullet[0][0] - self.scroll[0], bullet[0][1] - self.scroll[1])
                      if sword_point.distance_to(bullet_point) < 16:  # adjust radius if needed
                          self.bullets.remove(bullet)

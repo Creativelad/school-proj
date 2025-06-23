@@ -20,8 +20,10 @@ class Enemy(Entity):
                 movement=(movement[0] - 0.5 if self.direction else 0.5,movement[1])
             else:
                 self.direction = not self.direction
+            self.walking= max(0, self.walking - 1)
         elif random.random() < 0.01:
-            self.walking = random.randint(30,120)  # Randomly start walking for 1 to 60 frames
+            self.walking = random.randint(120,500)  
+            self.direction = random.choice([True, False])
         super().move(tilemap, movement)
 
     def render(self,offset=(0,0)):

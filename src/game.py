@@ -40,6 +40,7 @@ class Game:
             pass
 
         self.scroll = [0.0,0.0]
+        self.bullets = []
         self.bg = pygame.image.load(BASE_DIR/"../assets/images/bg.png").convert()
         self.bg = pygame.transform.scale(self.bg,(self.res[0],self.res[1]))
         self.sword_right = pygame.image.load(BASE_DIR / "../assets/images/sword.png").convert_alpha()
@@ -195,6 +196,18 @@ class Game:
             self.cat.render(offset=render_scroll)
             #print(tilemap.physics_rects_around(cat.pos,(4,2)))
             #pygame.display.update()
+            for bullet in self.bullets.copy():
+                bullet[0][0] += bullet[1]
+                bullet[2]+=1 
+                img =self.assets["bullets"] 
+                self.screen.blit(img,(bullet[0][0]-img.get_width()/2-self.scroll[0], bullet[0][1]-img.get_height()/2-self.scroll[1]))
+                if self.tilemap.solid_check(bullet[0]):
+                    self.bullets.remove(bullet)
+                elif bullet[2] > 360:
+                    self.bullets.remove(bullet)
+                elif not self.cat.dashing:
+                    if self.cat.rect().collidepoint(bullet[0]):
+                        self.bullets.remove(bullet)
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()

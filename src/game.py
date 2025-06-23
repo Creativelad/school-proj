@@ -39,39 +39,6 @@ class Game:
         self.level=0
         self.load_level(self.level)
         
-        # try:
-        #    self.tilemap.load('map.json')
-        # except FileNotFoundError:
-        #     pass
-        #
-        # self.scroll = [0.0,0.0]
-        # self.bullets = []
-        # self.bg = pygame.image.load(BASE_DIRf/"../assets/images/bg.png").convert()
-        # self.bg = pygame.transform.scale(self.bg,(self.res[0],self.res[1]))
-        # self.sword_right = pygame.image.load(BASE_DIR / "../assets/images/sword.png").convert_alpha()
-        # self.sword_left = pygame.transform.flip(self.sword_right, True, False)
-        # cat_image = pygame.image.load(BASE_DIR / "../assets/player/cat.png").convert_alpha()
-        # cat_image = pygame.transform.scale(cat_image,(32,20))
-        #
-        # spawn = self.tilemap.extract("player_spawn", False)
-        # if spawn:
-        #     x, y = spawn[0]["pos"]
-        #     self.cat = Player(x*self.tilemap.tile_size, y*self.tilemap.tile_size, cat_image, self, 5, 5)
-        # else:
-        #     self.cat = Player(0, 0, cat_image, self, 5, 5)
-        #
-        # enemy_spawners=["rat"]
-        # self.enemies = []
-        # for enemy in enemy_spawners:
-        #     spawn = self.tilemap.extract(enemy, False)
-        #     if spawn:ok 
-        #         for s in spawn:
-        #             x, y = s["pos"]
-        #             self.enemies.append(Enemy(x*self.tilemap.tile_size,y*self.tilemap.tile_size,self.assets[enemy],self,1,1))
-        # self.last_swing_time = 0.0
-        # self.real_swing_cooldown = 0.2
-        # self.swing_cooldown = self.real_swing_cooldown+self.cat.swing_duration/60
-        # self.fcount = 0
 
     def load_level(self,map_id):
         
@@ -290,6 +257,9 @@ class Game:
                 if self.cat.health < self.cat.max_health:
                  self.cat.health+=1
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
+            if self.cat.pos[1]>3000:
+                self.level=0
+                self.load_level(self.level)
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()
             self.clock.tick(60)

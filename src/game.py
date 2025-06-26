@@ -37,7 +37,7 @@ class Game:
 
         }
         self.tilemap= Tilemap(self)
-        self.level=10
+        self.level=0
         self.load_level(self.level)
         self.bg_music = pygame.mixer.Sound(BASE_DIR / "../assets/music/bgm.ogg")
         self.bg_music.play(-1)

@@ -31,17 +31,25 @@ class Game:
             "rat":(pygame.image.load(BASE_DIR / "../assets/enemy/rat.png")).convert_alpha(),
             "gun": (pygame.image.load(BASE_DIR / "../assets/enemy/gun.png").convert_alpha()),
             "bullets":(pygame.image.load(BASE_DIR / "../assets/enemy/bullet.png").convert_alpha()),
-            "flag":(pygame.image.load(BASE_DIR / "../assets/images/flag.png")).convert_alpha()
+            "flag":(pygame.image.load(BASE_DIR / "../assets/images/flag.png")).convert_alpha(),
+            "blahaj":(pygame.image.load(BASE_DIR / "../assets/images/blahaj.png")).convert()
 
 
         }
         self.tilemap= Tilemap(self)
-        self.level=0
+        self.level=10
         self.load_level(self.level)
+        self.bg_music = pygame.mixer.Sound(BASE_DIR / "../assets/music/bgm.ogg")
+        self.bg_music.play(-1)
+        self.jump_sound = pygame.mixer.Sound(BASE_DIR / "../assets/sounds/jump.ogg")
         
 
     def load_level(self,map_id):
         
+        if self.level == 12:
+            print("thats it! the games over")
+            pygame.quit()
+            sys.exit()
         self.tilemap.load(BASE_DIR.parent /"assets" / "levels" / f"{map_id}.json")
         self.scroll = [0.0,0.0]
         self.bullets = []
@@ -80,15 +88,14 @@ class Game:
         if flag_spawn:
             x, y = flag_spawn[0]["pos"]
             self.flag_pos = (x * self.tilemap.tile_size, y * self.tilemap.tile_size)
+        if self.level == 11:
+            self.bg_music.stop()
+            end_music = pygame.mixer.Sound(BASE_DIR / "../assets/music/end.ogg")
+            end_music.play()
 
 
 
     def run(self):
-
-        pygame.mixer.music.load(BASE_DIR / "../assets/music/bgm.ogg")
-        # v ENABLE THIS BEFORE MAIN RELASE v 
-        pygame.mixer.music.play(-1,0.0)
-        jump_sound = pygame.mixer.Sound(BASE_DIR / "../assets/sounds/jump.ogg")
 
         self.sword_x = 0.0 
         self.sword_y = 0.0
@@ -104,9 +111,9 @@ class Game:
             keys = pygame.key.get_pressed()
             mouse = pygame.mouse.get_pressed()
             movement = [0, 0]
-            if keys[pygame.K_SPACE] and self.cat.vel[1] == 0 and not self.cat.dashing:
+            if keys[pygame.K_SPACE] and self.cat.vel[1] == 0:
                 self.cat.vel[1]=-3
-                jump_sound.play()
+                self.jump_sound.play()
 
             if keys[pygame.K_a]: 
                 movement[0] -= self.cat.speed
@@ -122,14 +129,11 @@ class Game:
                 mouse_x_unscaled = mouse_x / 2
                 mouse_y_unscaled = mouse_y / 2
                 
-                # Undo camera scroll (scroll holds world coordinates offset)
                 mouse_world_x = mouse_x_unscaled + self.scroll[0]
                 mouse_world_y = mouse_y_unscaled + self.scroll[1]
                 
-                # Player position in world coords (center of rect)
                 player_x, player_y = self.cat.rect().center
                 
-                # Vector from player to mouse in world coords
                 vec_x = mouse_world_x - player_x
                 vec_y = mouse_world_y - player_y
                 
@@ -167,10 +171,9 @@ class Game:
                  center_y -= render_scroll[1]
 
                  progress_ratio = self.cat.swing_progress / self.cat.swing_duration
-                 arc_angle = 90  # degrees of swing arc
+                 arc_angle = 90
                  radius = 32
 
-                 # Pick starting angle based on direction
                  start_angle = {
                      "right": -45,
                      "left": -135,
@@ -178,7 +181,7 @@ class Game:
                      "down": 45
                  }[self.cat.swing_dir]
                  if self.cat.swing_dir == "left":
-                     current_angle = start_angle - arc_angle * progress_ratio  # Reverse swing direction for left
+                     current_angle = start_angle - arc_angle * progress_ratio
                  else:
                      current_angle = start_angle + arc_angle * progress_ratio
 
@@ -212,7 +215,7 @@ class Game:
                 if self.cat.swinging:
                      sword_point = pygame.math.Vector2(self.sword_x, self.sword_y)  
                      enemy_point = pygame.math.Vector2(enemy.pos[0] - self.scroll[0],enemy.pos[1] - self.scroll[1])
-                     if sword_point.distance_to(enemy_point) < 16:  # adjust radius if needed
+                     if sword_point.distance_to(enemy_point) < 16:
                          self.enemies.remove(enemy)
 
 
@@ -241,13 +244,13 @@ class Game:
                 if self.cat.swinging:
                      sword_point = pygame.math.Vector2(self.sword_x, self.sword_y)  
                      bullet_point = pygame.math.Vector2(bullet[0][0] - self.scroll[0], bullet[0][1] - self.scroll[1])
-                     if sword_point.distance_to(bullet_point) < 16:  # adjust radius if needed
+                     if sword_point.distance_to(bullet_point) < 16:
                          self.bullets.remove(bullet)
 
 
 
             if self.flag_pos:
-                 flag_rect = pygame.Rect(self.flag_pos[0], self.flag_pos[1], 16, 16)  # assuming 16x16 flag size
+                 flag_rect = pygame.Rect(self.flag_pos[0], self.flag_pos[1], 16, 16)
                  if self.cat.rect().colliderect(flag_rect):
                      self.level = self.level+1
                      self.load_level(self.level)
@@ -257,8 +260,7 @@ class Game:
                 if self.cat.health < self.cat.max_health:
                  self.cat.health+=1
             scaled_surface = pygame.transform.scale(self.screen,(self.res[0]*2, self.res[1]*2))
-            if self.cat.pos[1]>3000:
-                self.level=0
+            if self.cat.pos[1]>1000:
                 self.load_level(self.level)
             self.real_screen.blit(scaled_surface, (0, 0))
             pygame.display.flip()

@@ -7,7 +7,7 @@ class Enemy(Entity):
         super().__init__(x, y, image, game, max_health, damage,dash_speed)
         self.health = max_health
         self.damage = damage
-        self.size = (1, 1)  # Size of the enemy entity
+        self.size = (1, 1)
         self.walking=0
 
 

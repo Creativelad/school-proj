@@ -80,12 +80,10 @@ class Entity:
 
             for i in (0, 1):
                     change = self.dash_norm[i] * 0.1
-                    # If dash_vel and dash_norm have the same sign
                     if (self.dash_vel[i] > 0 and self.dash_norm[i] > 0) or (self.dash_vel[i] < 0 and self.dash_norm[i] < 0):
                         self.dash_vel[i] -= change
                         if i == 1:
                          self.vel[1] = 0 
-                        # Prevent overshooting zero
                         if (self.dash_vel[i] > 0 and self.dash_vel[i] - change < 0) or (self.dash_vel[i] < 0 and self.dash_vel[i] - change > 0):
                             self.dash_vel[i] = 0
 

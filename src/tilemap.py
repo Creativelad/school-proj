@@ -74,17 +74,14 @@ class Tilemap:
          txt_surf = self.game.font.render(text, True, fg_color)
          w, h = txt_surf.get_size()
          
-         # Create a surface large enough for the outline
          surf = pygame.Surface((w+2, h+2), pygame.SRCALPHA)
          
-         # Render outline by blitting the text in the outline color at 8 offsets
          outline = self.game.font.render(text, True, outline_color)
          for dx in (-1, 0, 1):
              for dy in (-1, 0, 1):
                  if dx or dy:
                      surf.blit(outline, (dx+1, dy+1))
          
-         # Blit the main text in the center
          surf.blit(txt_surf, (1, 1))
          return surf
     
@@ -102,15 +99,12 @@ class Tilemap:
             tile = self.tilemap[loc]
             if tile["type"] == type:
                 matches.append(tile.copy())
-            # Check if tile["pos"] is a tuple, and handle accordingly
                 if isinstance(matches[-1]["pos"], tuple):
-                # Create a new list from the tuple to modify its values
                     pos = list(matches[-1]["pos"])
                     pos[0] *= self.tile_size
                     pos[1] *= self.tile_size
-                    matches[-1]["pos"] = tuple(pos)  # convert it back to a tuple if necessary
+                    matches[-1]["pos"] = tuple(pos)
                 else:
-                # If it's already a mutable type (list), just copy it
                     matches[-1]["pos"] = matches[-1]["pos"].copy()
                 
                 if not keep:
